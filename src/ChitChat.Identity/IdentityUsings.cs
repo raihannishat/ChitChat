@@ -5,3 +5,7 @@ global using ChitChat.Identity.Documents;
 global using ChitChat.Data.Repositories;
 global using ChitChat.Data.Configurations;
 global using ChitChat.Data.Documents;
+global using MongoDB.Bson;
+global using MongoDB.Bson.Serialization.Attributes;
+global using FluentValidation;
+global using ChitChat.Identity.BusinessObjects;
