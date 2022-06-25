@@ -1,4 +1,5 @@
 ﻿namespace ChitChat.Identity.Repositories;
-internal interface IAuthRepository
+
+public interface IAuthRepository
 {
 }
