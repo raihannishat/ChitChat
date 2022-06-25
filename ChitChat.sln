@@ -1,0 +1,53 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4F6544C9-645C-470E-92A1-7AA9B2959563}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{2683F2DF-DCB1-4485-BFC4-E195CCA09416}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChitChat.Api", "src\ChitChat.Api\ChitChat.Api.csproj", "{2963E9A4-AE6E-497D-8AD3-C56D27742FFD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChitChat.Core", "src\ChitChat.Core\ChitChat.Core.csproj", "{89BB7FC1-2F15-408E-90EC-F70C974D5BC9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChitChat.Data", "src\ChitChat.Data\ChitChat.Data.csproj", "{D19F8B9C-21AC-4382-A3B1-F5B466AECA24}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChitChat.Identity", "src\ChitChat.Identity\ChitChat.Identity.csproj", "{5BFF382F-5D92-4DCF-8DF9-4CD07FDDF76B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2963E9A4-AE6E-497D-8AD3-C56D27742FFD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2963E9A4-AE6E-497D-8AD3-C56D27742FFD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2963E9A4-AE6E-497D-8AD3-C56D27742FFD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2963E9A4-AE6E-497D-8AD3-C56D27742FFD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{89BB7FC1-2F15-408E-90EC-F70C974D5BC9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{89BB7FC1-2F15-408E-90EC-F70C974D5BC9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{89BB7FC1-2F15-408E-90EC-F70C974D5BC9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{89BB7FC1-2F15-408E-90EC-F70C974D5BC9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D19F8B9C-21AC-4382-A3B1-F5B466AECA24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D19F8B9C-21AC-4382-A3B1-F5B466AECA24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D19F8B9C-21AC-4382-A3B1-F5B466AECA24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D19F8B9C-21AC-4382-A3B1-F5B466AECA24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5BFF382F-5D92-4DCF-8DF9-4CD07FDDF76B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5BFF382F-5D92-4DCF-8DF9-4CD07FDDF76B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5BFF382F-5D92-4DCF-8DF9-4CD07FDDF76B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5BFF382F-5D92-4DCF-8DF9-4CD07FDDF76B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2963E9A4-AE6E-497D-8AD3-C56D27742FFD} = {4F6544C9-645C-470E-92A1-7AA9B2959563}
+		{89BB7FC1-2F15-408E-90EC-F70C974D5BC9} = {4F6544C9-645C-470E-92A1-7AA9B2959563}
+		{D19F8B9C-21AC-4382-A3B1-F5B466AECA24} = {4F6544C9-645C-470E-92A1-7AA9B2959563}
+		{5BFF382F-5D92-4DCF-8DF9-4CD07FDDF76B} = {4F6544C9-645C-470E-92A1-7AA9B2959563}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3754D969-981C-4F25-972D-43D35BC2D6A6}
+	EndGlobalSection
+EndGlobal
