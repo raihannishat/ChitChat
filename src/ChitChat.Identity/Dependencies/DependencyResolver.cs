@@ -1,4 +1,6 @@
-﻿namespace ChitChat.Identity.Dependencies;
+﻿using ChitChat.Identity.Utilities;
+
+namespace ChitChat.Identity.Dependencies;
 
 public static class DependencyResolver
 {
@@ -6,5 +8,8 @@ public static class DependencyResolver
     {
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserService, UserService>();
+        services.AddScoped<IAuthRepository, AuthRepository>();
+        services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<ITokenHelper, TokenHelper>();
     }
 }

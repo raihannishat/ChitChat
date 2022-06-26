@@ -1,6 +1,6 @@
 ﻿namespace ChitChat.Identity.Response;
 
-public class AuthenticationResponse
+public class AuthenticationResult
 {
     public string Token { get; set; } = null!;
     public bool Success { get; set; }

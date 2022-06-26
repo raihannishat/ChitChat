@@ -1,8 +1,8 @@
 ﻿namespace ChitChat.Identity.Validation;
 
-public class UserValidation : AbstractValidator<User>
+public class UserSingUpValidation : AbstractValidator<UserSignUp>
 {
-    public UserValidation()
+    public UserSingUpValidation()
     {
         RuleFor(user => user.Name).NotEmpty().NotNull().MinimumLength(3)
             .WithMessage("user name length must be minimum 3");

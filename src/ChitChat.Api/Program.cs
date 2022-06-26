@@ -1,3 +1,11 @@
+using ChitChat.Api.Configuration;
+using ChitChat.Identity.Configuration;
+using FluentValidation.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Reflection;
+using System.Text;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add serilog configuration for logging
@@ -7,31 +15,19 @@ builder.Host.UseSerilog((ctx, lc) => lc
     .Enrich.FromLogContext()
     .ReadFrom.Configuration(builder.Configuration));
 
-// Add services to the container.
-builder.Services.AddControllers();
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
 
-builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
+builder.Services.ConfgiureServices(builder);
 
 builder.Services.IdentityResolver();
 builder.Services.DataResolver();
 
+builder.Services.AddEndpointsApiExplorer();
+
 var app = builder.Build();
 
+builder.Services.Configure(app);
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.UseHttpsRedirection();
-
-app.UseAuthorization();
-
-app.MapControllers();
 
 try
 {

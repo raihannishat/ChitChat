@@ -13,41 +13,68 @@ public class UserController : ControllerBase
         _logger = logger;
     }
 
-    // GET: api/<UserController>
     [HttpGet]
-    public async Task<List<User>> Get() =>
+    public async Task<List<User>> GetAll() =>
         await _userService.GetAllUsersAsync();
 
-    // GET api/<UserController>/5
-    [HttpGet("{id}")]
-    public string Get(int id)
-    {
-        return "value";
-    }
 
-    // POST api/<UserController>
-    [HttpPost]
-    public void Post([FromBody] User user)
+    [HttpGet("GetById/{id:length(24)}")]
+    public async Task<ActionResult<User>> GetById([FromRoute] string id)
     {
-        try
+        var user = await _userService.GetUserByIdAsync(id);
+        if (user is null)
         {
-            _userService.CreateUser(user);
+            return NotFound();
         }
-        catch (Exception ex)
+        return user;
+    }
+
+    [HttpGet("GetByName/{name}")]
+    public async Task<bool> GetByName([FromRoute] string name)
+    {
+        var user = await _userService.GetUserByNameAsync(name);
+        if (user is null)
         {
-            _logger.LogInformation(ex, "POST");
+            return false;
         }
+        return true;
     }
 
-    // PUT api/<UserController>/5
-    [HttpPut("{id}")]
-    public void Put(int id, [FromBody] string value)
+    [HttpGet("GetByEmail/{email}")]
+    public async Task<bool> GetByEmail([FromRoute] string email)
     {
+        var user = await _userService.GetUserByEmailAsync(email);
+        if (user is null)
+        {
+            return false;
+        }
+        return true;
     }
 
-    // DELETE api/<UserController>/5
-    [HttpDelete("{id}")]
-    public void Delete(int id)
+    [HttpPut("{id:length(24)}")]
+    public async Task<ActionResult<User>> Update(string id, User updateUser)
     {
+        var user = await _userService.GetUserByIdAsync(id);
+        if (user is null)
+        {
+            return NotFound();
+        }
+
+        updateUser.Id = id;
+        await _userService.UpdateUserAsync(updateUser);
+        return NoContent();
     }
+
+    [HttpDelete("{id:length(24)}")]
+    public async Task<ActionResult<User>> Delete(string id)
+    {
+        var user = await _userService.GetUserByIdAsync(id);
+        if (user is null)
+        {
+            return NotFound();
+        }
+        await _userService.DeleteUserByIdAsync(id);
+        return NoContent();
+    }
+
 }
