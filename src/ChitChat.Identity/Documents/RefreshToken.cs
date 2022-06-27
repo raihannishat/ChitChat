@@ -1,5 +1,6 @@
 ﻿namespace ChitChat.Identity.Documents;
 
+[BsonCollection("RefreshToken")]
 public class RefreshToken : Document
 {
     public string Token { get; set; } = String.Empty;

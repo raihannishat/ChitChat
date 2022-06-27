@@ -1,5 +1,8 @@
-﻿namespace ChitChat.Api.Controllers;
+﻿using Microsoft.AspNetCore.Authorization;
 
+namespace ChitChat.Api.Controllers;
+
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class UserController : ControllerBase

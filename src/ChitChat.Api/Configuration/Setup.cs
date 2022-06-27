@@ -40,7 +40,7 @@ public static class Setup
         builder.Services.AddSingleton(tokenValidationParameters);
         // Add services to the container.
         builder.Services.AddControllers().AddFluentValidation(c =>
-            c.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
+            c.RegisterValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
 
         builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
