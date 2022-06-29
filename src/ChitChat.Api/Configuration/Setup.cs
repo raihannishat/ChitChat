@@ -18,11 +18,11 @@ public static class Setup
         {
             ValidateIssuerSigningKey = true,
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.ASCII.GetBytes(builder.Configuration.GetSection("JwtSettings:Secret").ToString())),
+                Encoding.ASCII.GetBytes(builder.Configuration.GetSection("JwtSettings:Secret").Value)),
             ValidateIssuer = false,
             ValidateAudience = false,
             RequireExpirationTime = false,
-            ValidateLifetime = true
+            ClockSkew = TimeSpan.FromSeconds(0),
         };
 
         builder.Services.AddAuthentication(x =>
@@ -76,11 +76,9 @@ public static class Setup
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
         app.UseHttpsRedirection();
         app.UseAuthentication();
         app.UseAuthorization();
-
         app.MapControllers();
     }
 

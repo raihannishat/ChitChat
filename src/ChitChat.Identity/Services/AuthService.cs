@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using ChitChat.Identity.Configuration;
 using ChitChat.Identity.Response;
 using ChitChat.Identity.Utilities;
 using Microsoft.Extensions.Configuration;
@@ -18,16 +17,14 @@ public  class AuthService : IAuthService
     private readonly IAuthRepository _authRepository;
     private readonly ITokenHelper _tokenHelper;
     private readonly IMapper _mapper;
-    private readonly TokenValidationParameters _tokenValidationParameters;
     public AuthService(IConfiguration configuration, IAuthRepository authRepository, IUserRepository userRepository,
-        IMapper mapper, ITokenHelper tokenHelper, TokenValidationParameters tokenValidationParameters)
+        IMapper mapper, ITokenHelper tokenHelper)
     {
         _authRepository = authRepository;
         _userRepository = userRepository;
         _mapper = mapper;
-        _key = configuration.GetSection("JwtSettings:Secret").ToString();
+        _key = configuration.GetSection("JwtSettings:Secret").Value;
         _tokenHelper = tokenHelper;
-        _tokenValidationParameters = tokenValidationParameters;
     }
 
     public async Task SignUpAsync(UserSignUp user)
@@ -68,7 +65,7 @@ public  class AuthService : IAuthService
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             }),
 
-            Expires = DateTime.UtcNow.AddMinutes(1),
+            Expires = DateTime.UtcNow.AddSeconds(30),
             SigningCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(tokenKey),
                 SecurityAlgorithms.HmacSha256Signature
