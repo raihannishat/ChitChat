@@ -4,27 +4,20 @@ namespace ChitChat.Data.Services;
 
 public class RedisCacheService : ICacheService
 {
-    private readonly List<string> _listKeys;
     private readonly IConnectionMultiplexer _connectionMultiplexer;
     public RedisCacheService(IConnectionMultiplexer connectionMultiplexer)
     {
         _connectionMultiplexer = connectionMultiplexer;
-        _listKeys = new List<string>();
-
     }
 
     public List<string> GetAllKeysAsync()
     {
-        //var keys =  _connectionMultiplexer.GetServer("localhost", 6379).Keys();
-        //ListKeys = keys;
-
-        using (ConnectionMultiplexer redis = ConnectionMultiplexer.Connect("localhost:6379"))
-        {
-            var keys = redis.GetServer("localhost", 6379).Keys();
-            _listKeys.AddRange(keys.Select(key => (string)key).ToList());
-
-        }
-        return _listKeys;
+       
+        List<string> keyList = new List<string>();
+        var keys =  _connectionMultiplexer.GetServer("localhost", 6379).Keys();
+            keyList.AddRange(keys.Select(key => (string)key).ToList());
+ 
+        return keyList;
     }
 
     public async Task<string> GetCachValueAsync(string key)
