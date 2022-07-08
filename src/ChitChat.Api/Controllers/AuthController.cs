@@ -46,7 +46,7 @@ public class AuthController : ControllerBase
         var authResponse = await _authService.SignInAsync(login);
         if (!authResponse.Success)
         {
-            return BadRequest(new AuthFailedResponse
+            return Unauthorized(new AuthFailedResponse
             {
                 Errors = authResponse.Errors
             });
