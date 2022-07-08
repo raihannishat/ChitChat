@@ -66,7 +66,8 @@ public static class Setup
                 new string[] {}
             }
             });
-            });
+        });
+        builder.Services.AddCors();
     }
 
     public static void Configure(this IServiceCollection service, WebApplication app )
@@ -76,6 +77,12 @@ public static class Setup
             app.UseSwagger();
             app.UseSwaggerUI();
         }
+
+        app.UseCors(options => options
+            .WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+
         app.UseHttpsRedirection();
         app.UseAuthentication();
         app.UseAuthorization();
