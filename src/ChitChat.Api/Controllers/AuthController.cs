@@ -20,7 +20,7 @@ public class AuthController : ControllerBase
         _logger = logger;
     }
 
-    [Route("sign-up")]
+    [Route("signup")]
     [HttpPost]
     public async Task<ActionResult<User>> SignUp(UserSignUp user)
     {
@@ -39,7 +39,7 @@ public class AuthController : ControllerBase
     }
 
 
-    [Route("sign-in")]
+    [Route("signin")]
     [HttpPost]
     public async Task<IActionResult> SignIn([FromBody] UserSignIn login)
     {
