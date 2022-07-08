@@ -60,7 +60,7 @@ public  class AuthService : IAuthService
             Subject = new ClaimsIdentity(new Claim[]
             {
                     new Claim("Id", user.Id),
-                    new Claim(JwtRegisteredClaimNames.Sub, user.Email),
+                    new Claim(JwtRegisteredClaimNames.Sub, user.Name),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             }),

@@ -33,7 +33,7 @@ public class CacheController : ControllerBase
         return Ok(value);
     }
 
-    [HttpPost("updateUser")]
+    [HttpPost("activeNotifying")]
     public async Task<IActionResult> Post([FromBody] CacheEntryRequest request)
     {
         await _cacheService.SetCachValueAsync(request.Key, request.Value);
