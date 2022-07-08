@@ -65,7 +65,7 @@ public  class AuthService : IAuthService
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             }),
 
-            Expires = DateTime.UtcNow.AddSeconds(30),
+            Expires = DateTime.UtcNow.AddSeconds(60),
             SigningCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(tokenKey),
                 SecurityAlgorithms.HmacSha256Signature
