@@ -1,4 +1,6 @@
-﻿namespace ChitChat.Data.Dependencies;
+﻿using ChitChat.Data.Services;
+
+namespace ChitChat.Data.Dependencies;
 
 public static class DependencyResolver
 {
@@ -6,5 +8,8 @@ public static class DependencyResolver
     {
         services.AddScoped<IMongoDbSettings>(serviceProvider =>
                 serviceProvider.GetRequiredService<IOptions<MongoDbSettings>>().Value);
+
+        services.AddSingleton<ICacheService, RedisCacheService>();
+
     }
 }

@@ -2,6 +2,7 @@
 using FluentValidation.AspNetCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using StackExchange.Redis;
 using System.Reflection;
 using System.Text;
 
@@ -38,6 +39,9 @@ public static class Setup
         });
 
         builder.Services.AddSingleton(tokenValidationParameters);
+        builder.Services.AddSingleton<IConnectionMultiplexer>(x =>
+        ConnectionMultiplexer.Connect(builder.Configuration.GetValue<string>("RedisConnection")));
+
         // Add services to the container.
         builder.Services.AddControllers().AddFluentValidation(c =>
             c.RegisterValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
