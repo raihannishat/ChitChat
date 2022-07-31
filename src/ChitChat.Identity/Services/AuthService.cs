@@ -1,14 +1,4 @@
-﻿using AutoMapper;
-using ChitChat.Identity.Response;
-using ChitChat.Identity.Utilities;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using MongoDB.Driver;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Text;
-
-namespace ChitChat.Identity.Services;
+﻿namespace ChitChat.Identity.Services;
 
 public  class AuthService : IAuthService
 {

@@ -6,3 +6,5 @@ global using MongoDB.Bson.Serialization.Attributes;
 global using ChitChat.Data.Documents;
 global using System.Linq.Expressions;
 global using MongoDB.Driver;
+global using StackExchange.Redis;
+global using ChitChat.Data.Services;

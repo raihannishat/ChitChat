@@ -1,7 +1,6 @@
-﻿using AutoMapper;
+﻿namespace ChitChat.Identity.Dependencies;
 
-namespace ChitChat.Identity.Dependencies;
-internal class IdenityProfile : Profile
+public class IdenityProfile : Profile
 {
     public IdenityProfile()
     {

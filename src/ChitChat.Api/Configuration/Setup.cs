@@ -1,19 +1,11 @@
-﻿using ChitChat.Identity.Configuration;
-using FluentValidation.AspNetCore;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using StackExchange.Redis;
-using System.Reflection;
-using System.Text;
-
-namespace ChitChat.Api.Configuration;
+﻿namespace ChitChat.Api.Configuration;
 
 public static class Setup
 {
-    public static void ConfgiureServices(this IServiceCollection services, WebApplicationBuilder builder)
+    public static void ConfgiureServices(this WebApplicationBuilder builder)
     {
-        services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
-        services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+        builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
+        builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
 
         var tokenValidationParameters = new TokenValidationParameters
         {
@@ -42,7 +34,6 @@ public static class Setup
         builder.Services.AddSingleton<IConnectionMultiplexer>(x =>
         ConnectionMultiplexer.Connect(builder.Configuration.GetValue<string>("RedisConnection")));
 
-        // Add services to the container.
         builder.Services.AddControllers().AddFluentValidation(c =>
             c.RegisterValidatorsFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
 
@@ -71,10 +62,14 @@ public static class Setup
             }
             });
         });
+
+        builder.Services.IdentityResolver();
+        builder.Services.DataResolver();
+        builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddCors();
     }
 
-    public static void Configure(this IServiceCollection service, WebApplication app )
+    public static void Configure(this WebApplication app )
     {
         if (app.Environment.IsDevelopment())
         {
@@ -91,6 +86,15 @@ public static class Setup
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
+    }
+
+    public static void ConfigureLogger(this WebApplicationBuilder builder)
+    {
+        builder.Host.UseSerilog((ctx, lc) => lc
+            .MinimumLevel.Debug()
+            .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+            .Enrich.FromLogContext()
+            .ReadFrom.Configuration(builder.Configuration));
     }
 
 }

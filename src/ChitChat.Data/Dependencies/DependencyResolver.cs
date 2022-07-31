@@ -1,6 +1,4 @@
-﻿using ChitChat.Data.Services;
-
-namespace ChitChat.Data.Dependencies;
+﻿namespace ChitChat.Data.Dependencies;
 
 public static class DependencyResolver
 {

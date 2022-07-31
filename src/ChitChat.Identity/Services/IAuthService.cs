@@ -1,6 +1,4 @@
-﻿using ChitChat.Identity.Response;
-
-namespace ChitChat.Identity.Services;
+﻿namespace ChitChat.Identity.Services;
 
 public interface IAuthService
 {
@@ -11,5 +9,4 @@ public interface IAuthService
     Task<AuthenticationResult> GenerateTokenAsync(User user);
 
     Task<AuthenticationResult> RefreshTokenAsync(string token, string refreshToken);
-
 }

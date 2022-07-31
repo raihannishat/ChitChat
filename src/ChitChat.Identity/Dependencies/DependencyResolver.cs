@@ -1,8 +1,4 @@
-﻿using ChitChat.Identity.Configuration;
-using ChitChat.Identity.Utilities;
-using Microsoft.Extensions.Options;
-
-namespace ChitChat.Identity.Dependencies;
+﻿namespace ChitChat.Identity.Dependencies;
 
 public static class DependencyResolver
 {

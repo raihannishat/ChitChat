@@ -1,5 +1,4 @@
-﻿using StackExchange.Redis;
-
+﻿
 namespace ChitChat.Data.Services;
 
 public class RedisCacheService : ICacheService
