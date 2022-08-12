@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\ChitChat.Data\ChitChat.Data.csproj" />
+    <ProjectReference Include="..\ChitChat.Identity\ChitChat.Identity.csproj" />
   </ItemGroup>
 
 </Project>

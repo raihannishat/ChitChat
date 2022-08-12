@@ -12,6 +12,7 @@ public class MongoRepository<TDocument> : IRepository<TDocument>
     }
     public Task<TDocument> FindByIdAsync(string id)
     {
+
         return Task.Run(() =>
         {
             var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, id);

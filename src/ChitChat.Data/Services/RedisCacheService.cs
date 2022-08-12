@@ -19,6 +19,7 @@ public class RedisCacheService : ICacheService
         var strings = string.Join("", keys);
         
         var list = strings.Split("DIU_Raizor:").ToList();
+
         list.RemoveAt(0);
 
         return list;
