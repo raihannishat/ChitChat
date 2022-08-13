@@ -52,6 +52,6 @@ public class MongoRepository<TDocument> : IRepository<TDocument>
     private protected string GetCollectionName(Type documentType)
     {
         return ((BsonCollectionAttribute)documentType.GetCustomAttributes(
-                typeof(BsonCollectionAttribute), true).FirstOrDefault()).CollectionName;
+                typeof(BsonCollectionAttribute), true).FirstOrDefault()!).CollectionName;
     }
 }

@@ -6,5 +6,7 @@ namespace ChitChat.Core.Repositories;
 
 public interface IMessageRepository : IRepository<Documents.Message>
 {
-    Task<Documents.Message> GetMessage(string id);
+    Task<Message> GetMessage(string id);
+	Task<IEnumerable<MessageBusinessObject>> GetMessageThread(string currentUsername,
+		string recipientUsername);
 }

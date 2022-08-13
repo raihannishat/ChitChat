@@ -8,6 +8,5 @@ public static class DependencyResolver
                 serviceProvider.GetRequiredService<IOptions<MongoDbSettings>>().Value);
 
         services.AddSingleton<ICacheService, RedisCacheService>();
-
     }
 }

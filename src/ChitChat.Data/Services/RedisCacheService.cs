@@ -1,5 +1,4 @@
-﻿
-namespace ChitChat.Data.Services;
+﻿namespace ChitChat.Data.Services;
 
 public class RedisCacheService : ICacheService
 {

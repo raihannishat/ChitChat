@@ -1,4 +1,5 @@
 ﻿namespace ChitChat.Api.Configuration;
+using ChitChat.Core.SignalR;
 
 public static class Setup
 {
@@ -63,6 +64,7 @@ public static class Setup
             });
         });
 
+        builder.Services.AddSignalR();
         builder.Services.IdentityResolver();
         builder.Services.DataResolver();
         builder.Services.AddEndpointsApiExplorer();
@@ -85,7 +87,8 @@ public static class Setup
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
-    }
+		app.MapHub<MessageHub>("hubs/message");
+	}
 
     public static void ConfigureLogger(this WebApplicationBuilder builder)
     {
