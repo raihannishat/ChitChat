@@ -1,0 +1,27 @@
+<div class="container">
+  <div class="row">
+    <div *ngFor="let user of activeUsers">
+      <div class="col-md-8">
+        <div class="people-nearby">
+          <div class="nearby-user">
+            <div class="row">
+              <div class="col-md-2 col-sm-2">
+                <img
+                  src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?t=st=1657283586~exp=1657284186~hmac=19517133bda3612f80dac946a8d94c3a3daa9210e9ecab982fa6522b404766e9&w=740"
+                  alt="user"
+                  class="profile-photo-lg"
+                />
+              </div>
+              <div class="col-md-7 col-sm-7">
+                <h5>
+                  <a routerLink="/message/{{user}}" [queryParams]='{membername: user}' class="profile-link">{{ user }}</a>
+                </h5>
+                <p>Status: Active</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

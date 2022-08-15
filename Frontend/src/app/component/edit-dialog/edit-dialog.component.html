@@ -1,0 +1,52 @@
+<p style="font-size: 25px" mat-dialog-tittle>User information</p>
+<div mat-dialog-content>
+  <form [formGroup]="userEditForm">
+    <mat-form-field appearance="outline">
+      <mat-label>Username</mat-label>
+      <input matInput placeholder="Ex: pawpaw" formControlName="userName" />
+      <mat-icon matSuffix>person_outline</mat-icon>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input matInput placeholder="Ex: xyz@gmail.com" formControlName="email" />
+      <mat-icon matSuffix>alternate_email</mat-icon>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        type="password"
+        placeholder=""
+        formControlName="password"
+      />
+      <mat-icon matSuffix>security</mat-icon>
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Date of Birth</mat-label>
+      <input matInput [matDatepicker]="dob" formControlName="dateOfBirth" />
+      <mat-hint>MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle matSuffix [for]="dob"></mat-datepicker-toggle>
+      <mat-datepicker #dob>
+        <mat-datepicker-actions>
+          <button mat-button matDatepickerCancel>Cancel</button>
+          <button mat-raised-button color="primary" matDatepickerApply>
+            Apply
+          </button>
+        </mat-datepicker-actions>
+      </mat-datepicker>
+    </mat-form-field>
+  </form>
+</div>
+<div *ngIf="errorMethod()" class="has-text-danger">Age must be above 18</div>
+<div mat-dialog-actions [align]="'end'">
+  <button mat-raised-button color="warn" mat-dialog-close>Cancel</button>
+  <button
+    style="margin: 8px"
+    mat-raised-button
+    color="primary"
+    [disabled]="userEditForm.invalid"
+    (click)="updateUser()"
+  >
+    Update
+  </button>
+</div>
