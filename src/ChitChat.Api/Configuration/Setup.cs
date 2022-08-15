@@ -1,4 +1,6 @@
 ﻿namespace ChitChat.Api.Configuration;
+
+using ChitChat.Core.Dependencies;
 using ChitChat.Core.SignalR;
 
 public static class Setup
@@ -29,7 +31,24 @@ public static class Setup
             x.RequireHttpsMetadata = false;
             x.SaveToken = true;
             x.TokenValidationParameters = tokenValidationParameters;
-        });
+
+			//x.Events = new JwtBearerEvents
+			//{
+			//	OnMessageReceived = context =>
+			//	{
+			//		var accessToken = context.Request.Query["access_token"];
+
+			//		var path = context.HttpContext.Request.Path;
+			//		if (!string.IsNullOrEmpty(accessToken) &&
+			//			path.StartsWithSegments("/hubs"))
+			//		{
+			//			context.Token = accessToken;
+			//		}
+
+			//		return Task.CompletedTask;
+			//	}
+			//};
+		});
 
         builder.Services.AddSingleton(tokenValidationParameters);
         builder.Services.AddSingleton<IConnectionMultiplexer>(x =>
@@ -62,10 +81,16 @@ public static class Setup
                 new string[] {}
             }
             });
-        });
+		});
 
-        builder.Services.AddSignalR();
-        builder.Services.IdentityResolver();
+        builder.Services.AddSignalR(hubOptions =>
+        {
+			hubOptions.EnableDetailedErrors = true;
+			hubOptions.KeepAliveInterval = TimeSpan.FromMinutes(1);
+		});
+
+        builder.Services.CoreResolver();
+		builder.Services.IdentityResolver();
         builder.Services.DataResolver();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddCors();
@@ -78,12 +103,19 @@ public static class Setup
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-        app.UseCors(options => options
-            .WithOrigins("http://localhost:4200")
-            .AllowAnyHeader()
-            .AllowAnyMethod());
 
-        app.UseHttpsRedirection();
+		//app.UseCors(options => options
+		//    .WithOrigins("http://localhost:4200")
+		//    .AllowAnyHeader()
+		//    .AllowAnyMethod());
+
+		app.UseCors(x => x
+            .AllowAnyHeader()
+	        .AllowAnyMethod()
+	        .AllowCredentials()
+	        .WithOrigins("http://localhost:4200"));
+
+		app.UseHttpsRedirection();
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();

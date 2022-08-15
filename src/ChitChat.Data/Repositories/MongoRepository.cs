@@ -12,7 +12,6 @@ public class MongoRepository<TDocument> : IRepository<TDocument>
     }
     public Task<TDocument> FindByIdAsync(string id)
     {
-
         return Task.Run(() =>
         {
             var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, id);
@@ -52,6 +51,6 @@ public class MongoRepository<TDocument> : IRepository<TDocument>
     private protected string GetCollectionName(Type documentType)
     {
         return ((BsonCollectionAttribute)documentType.GetCustomAttributes(
-                typeof(BsonCollectionAttribute), true).FirstOrDefault()!).CollectionName;
+                typeof(BsonCollectionAttribute), true).FirstOrDefault()).CollectionName;
     }
 }

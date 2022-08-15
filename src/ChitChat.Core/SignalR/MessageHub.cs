@@ -11,6 +11,7 @@ using ChitChat.Core.Extentions;
 using ChitChat.Core.BusinessObjects;
 using ChitChat.Identity.Services;
 using ChitChat.Core.Repositories;
+using Microsoft.AspNetCore.Authorization;
 
 namespace ChitChat.Core.SignalR;
 
