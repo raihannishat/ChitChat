@@ -51,7 +51,7 @@ export class LoginComponent implements OnInit {
         const refreshToken = (<any>response).refreshToken;
 
         this.heartBeatService.notifyActive(this.userActiveInfo).subscribe();
-        
+
         localStorage.setItem('username', this.userLogin.name);
 
         localStorage.setItem('token', token);
