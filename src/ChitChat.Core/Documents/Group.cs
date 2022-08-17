@@ -1,6 +1,9 @@
-﻿using ChitChat.Data.Documents;
+﻿using ChitChat.Data.Configurations;
+using ChitChat.Data.Documents;
 
 namespace ChitChat.Core.Documents;
+
+[BsonCollection("Groups")]
 public class Group : Document
 {
     public Group()

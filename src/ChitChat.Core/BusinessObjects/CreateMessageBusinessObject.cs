@@ -4,6 +4,7 @@ namespace ChitChat.Core.BusinessObjects;
 
 public class CreateMessageBusinessObject
 {
-	public string RecipientUsername { get; set; }
+	public string Sender { get; set; }
+	public string Receiver { get; set; }
 	public string Content { get; set; }
 }

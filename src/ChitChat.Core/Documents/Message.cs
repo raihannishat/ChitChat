@@ -1,7 +1,10 @@
-﻿using ChitChat.Data.Documents;
+﻿using ChitChat.Data.Configurations;
+using ChitChat.Data.Documents;
 using ChitChat.Identity.Documents;
 
 namespace ChitChat.Core.Documents;
+
+[BsonCollection("Messages")]
 public class Message : Document
 {
     public int SenderId { get; set; }

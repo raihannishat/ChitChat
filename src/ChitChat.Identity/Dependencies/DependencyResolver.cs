@@ -10,7 +10,7 @@ public static class DependencyResolver
         services.AddScoped<IAuthService, AuthService>();
         services.AddScoped<ITokenHelper, TokenHelper>();
 
-        services.AddScoped<IJwtSettings>(serviceProvider =>
+        services.AddSingleton<IJwtSettings>(serviceProvider =>
                 serviceProvider.GetRequiredService<IOptions<JwtSettings>>().Value);
     }
 }

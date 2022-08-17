@@ -6,7 +6,7 @@ using MongoDB.Driver.Linq;
 
 namespace ChitChat.Core.Repositories;
 
-public class GroupRepository : MongoRepository<Documents.Group> , IGroupRepository
+public class GroupRepository : MongoRepository<Group> , IGroupRepository
 {
     public GroupRepository(IMongoDbSettings settings) : base(settings) { }
     public async Task<Group> FindGroupForConnection(string connectionId)

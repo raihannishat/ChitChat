@@ -7,8 +7,8 @@ public static class Setup
 {
     public static void ConfgiureServices(this WebApplicationBuilder builder)
     {
-        builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection("MongoDbSettings"));
-        builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
+        builder.Services.Configure<MongoDbSettings>(builder.Configuration.GetSection(nameof(MongoDbSettings)));
+        builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection(nameof(JwtSettings)));
 
         var tokenValidationParameters = new TokenValidationParameters
         {
@@ -86,8 +86,8 @@ public static class Setup
         builder.Services.AddSignalR(hubOptions =>
         {
 			hubOptions.EnableDetailedErrors = true;
-			hubOptions.KeepAliveInterval = TimeSpan.FromMinutes(1);
-		});
+            hubOptions.MaximumReceiveMessageSize = 102400000;
+        });
 
         builder.Services.CoreResolver();
 		builder.Services.IdentityResolver();

@@ -53,6 +53,7 @@ public  class AuthService : IAuthService
                     new Claim(JwtRegisteredClaimNames.Sub, user.Name),
                     new Claim(JwtRegisteredClaimNames.Email, user.Email),
                     new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                    new Claim(JwtRegisteredClaimNames.UniqueName, user.Name)
             }),
 
             Expires = DateTime.UtcNow.AddSeconds(60),

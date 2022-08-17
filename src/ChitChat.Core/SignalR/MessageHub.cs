@@ -1,17 +1,12 @@
 ﻿using AutoMapper;
 using ChitChat.Core.Documents;
 using Microsoft.AspNetCore.SignalR;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using ChitChat.Core.Services;
 using ChitChat.Core.Extentions;
 using ChitChat.Core.BusinessObjects;
 using ChitChat.Identity.Services;
 using ChitChat.Core.Repositories;
-using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace ChitChat.Core.SignalR;
 
@@ -35,16 +30,17 @@ public class MessageHub : Hub
 	}
 
 	public override async Task OnConnectedAsync()
-	{
+	{	
 		var httpContext = Context.GetHttpContext();
-		var otherUser = httpContext.Request.Query["user"].ToString();
-		var groupName = GetGroupName(Context.User.GetUsername(), otherUser);
+		var sender = httpContext.Request.Query["sender"].ToString();
+		var receiver = httpContext.Request.Query["receiver"].ToString();
+		var groupName = GetGroupName(sender, receiver);
 		await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
-		var group = await AddToGroup(groupName);
+		var group = await AddToGroup(groupName, sender);
 		await Clients.Group(groupName).SendAsync("UpdatedGroup", group);
 
 		var messages = await _messageService.
-			GetMessageThread(Context.User.GetUsername(), otherUser);
+			GetMessageThread(sender, receiver);
 
 		await Clients.Caller.SendAsync("ReceiveMessageThread", messages);
 	}
@@ -58,18 +54,19 @@ public class MessageHub : Hub
 
 	public async Task SendMessage(CreateMessageBusinessObject createMessageBusinessObject)
 	{
-		var username = Context.User.GetUsername();
-
-		if (username == createMessageBusinessObject.RecipientUsername.ToLower())
+		var username = createMessageBusinessObject.Sender;
+		
+		if (username == createMessageBusinessObject.Receiver.ToLower())
 			throw new HubException("You cannot send messages to yourself");
 
 		var sender = await _userService.GetUserByNameAsync(username);
-		var recipient = await _userService.GetUserByNameAsync(createMessageBusinessObject.RecipientUsername);
+		var recipient = await _userService.GetUserByNameAsync(createMessageBusinessObject.Receiver);
 
 		if (recipient == null) throw new HubException("Not found user");
 
 		var message = new MessageBusinessObject
 		{
+			MessageSent = DateTime.Now,
 			Sender = sender,
 			Recipient = recipient,
 			SenderName = sender.Name,
@@ -87,10 +84,10 @@ public class MessageHub : Hub
 		
 	}
 
-	private async Task<Group> AddToGroup(string groupName)
+	private async Task<Group> AddToGroup(string groupName, string sender)
 	{
 		var group = await _messageService.GetMessageGroup(groupName);
-		var connection = new Connection(Context.ConnectionId, Context.User.GetUsername());
+		var connection = new Connection(Context.ConnectionId, sender);
 
 		if (group == null)
 		{

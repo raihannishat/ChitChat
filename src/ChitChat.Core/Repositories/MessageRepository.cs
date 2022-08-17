@@ -25,7 +25,7 @@ public class MessageRepository : MongoRepository<Documents.Message> , IMessageRe
             .SingleOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<IEnumerable<BusinessObjects.MessageBusinessObject>>
+    public async Task<IList<BusinessObjects.MessageBusinessObject>>
 		GetMessageThread(string currentUsername, string recipientUsername)
     {
 		var messages = await _collection.AsQueryable()
@@ -49,6 +49,6 @@ public class MessageRepository : MongoRepository<Documents.Message> , IMessageRe
 			}
 		}
 
-		return (IEnumerable<MessageBusinessObject>)messages;
+		return ( _mapper.Map<IList<MessageBusinessObject>>(messages));
 	}
 }

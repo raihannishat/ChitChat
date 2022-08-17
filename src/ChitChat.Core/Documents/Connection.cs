@@ -1,6 +1,10 @@
-﻿using ChitChat.Data.Documents;
+﻿using ChitChat.Data.Configurations;
+using ChitChat.Data.Documents;
 
 namespace ChitChat.Core.Documents;
+
+[BsonCollection("Connections")]
+
 public class Connection : Document
 {
     public Connection()
