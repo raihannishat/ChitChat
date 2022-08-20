@@ -31,6 +31,15 @@ public class MessageService : IMessageService
         await _groupRepository.InsertOneAsync(group);
     }
 
+    public async void ReplaceGroup(Group group)
+    {
+        await _groupRepository.ReplaceOneAsync(group);
+    }
+
+    public async void AddConnection(Connection connection)
+    {
+        await _connectionRepository.InsertOneAsync(connection);
+    }
     public async Task<Connection> GetConnection(string connectionId)
     {
         return await _connectionRepository.FindByIdAsync(connectionId);
@@ -67,4 +76,6 @@ public class MessageService : IMessageService
     {
         return await _messageRespository.GetMessageThread(currentUsername, recipientUsername);
     }
+
+   
 }

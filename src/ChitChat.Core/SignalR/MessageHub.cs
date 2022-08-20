@@ -15,18 +15,14 @@ public class MessageHub : Hub
 	private readonly IMapper _mapper;
 	private readonly IMessageService _messageService;
 	private readonly IUserService _userService;
-	private readonly IGroupRepository _groupRepository;
-	private readonly IConnectionRepository _connectionRepository;
+	
 
 	public MessageHub(IMapper mapper, IMessageService messageService, 
-		IUserService userService, IGroupRepository groupRepository,
-		IConnectionRepository connectionRepository)
+		IUserService userService)
 	{
 		_messageService = messageService;
 		_mapper = mapper;
 		_userService = userService;
-		_groupRepository = groupRepository;	
-		_connectionRepository = connectionRepository;
 	}
 
 	public override async Task OnConnectedAsync()
@@ -37,6 +33,7 @@ public class MessageHub : Hub
 		var groupName = GetGroupName(sender, receiver);
 		await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
 		var group = await AddToGroup(groupName, sender);
+		_messageService.ReplaceGroup(group);
 		await Clients.Group(groupName).SendAsync("UpdatedGroup", group);
 
 		var messages = await _messageService.
@@ -48,6 +45,7 @@ public class MessageHub : Hub
 	public override async Task OnDisconnectedAsync(Exception exception)
 	{
 		var group = await RemoveFromMessageGroup();
+
 		await Clients.Group(group.Name).SendAsync("UpdatedGroup", group);
 		await base.OnDisconnectedAsync(exception);
 	}
@@ -76,7 +74,13 @@ public class MessageHub : Hub
 
 		var groupName = GetGroupName(sender.Name, recipient.Name);
 
-		var group = await _messageService.GetMessageGroup(groupName);
+		//getting group name for finding the receiver connection id to check message already read or not
+		//var group = await _messageService.GetMessageGroup(groupName);
+  //      if (group.Connections.Any(x => x.Username == recipient.Name))
+  //      {
+		//	message.DateRead = DateTime.Now;
+
+		//}
 
 		_messageService.AddMessage(message);
 
@@ -99,23 +103,30 @@ public class MessageHub : Hub
 
 		group.Connections.Add(_mapper.Map<Connection>(connection));
 
-		await _connectionRepository.InsertOneAsync(connection);
+		//_messageService.ReplaceGroup(group);
+		_messageService.AddConnection(connection);
 
 		return group;
 
-		throw new HubException("Failed to join group");
+		//use try catch instead
+		//throw new HubException("Failed to join group");
 	}
 
 	private async Task<Group> RemoveFromMessageGroup()
 	{
 		var group = await _messageService.GetGroupForConnection(Context.ConnectionId);
-		var connection = group.Connections.FirstOrDefault(x => x.ConnectionId == Context.ConnectionId);
-		_messageService.RemoveConnection(connection);
+		var connection = group.Connections.FirstOrDefault(x => 
+									x.ConnectionId == Context.ConnectionId);
+
 		group.Connections.Remove(connection);
-		
+		_messageService.RemoveConnection(connection);
+
+		_messageService.ReplaceGroup(group);
+
 		return group;
 
-		throw new HubException("Failed to remove from group");
+		//use try catch instead
+		//throw new HubException("Failed to remove from group");
 	}
 
 	private string GetGroupName(string caller, string other)

@@ -5,7 +5,9 @@ namespace ChitChat.Core.Services;
 public interface IMessageService
 {
 	void AddGroup(Group group);
+	void ReplaceGroup(Group group);
 	void AddMessage(MessageBusinessObject message);
+	void AddConnection(Connection connection);
 	void DeleteMessage(Message message);
 	Task<Connection> GetConnection(string connectionId);
 	Task<Group> GetGroupForConnection(string connectionId);
