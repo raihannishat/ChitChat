@@ -27,7 +27,11 @@ const routes: Routes = [
   },
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
   //{path:"messages",component:MemberMessageComponent},
-  {path:"message/:username",component:MemberMessageComponent},
+  {
+    path: 'message/:username',
+    component: MemberMessageComponent,
+    canActivate: [AuthGuard],
+  },
 ];
 
 @NgModule({
