@@ -34,6 +34,7 @@ public class MongoRepository<TDocument> : IRepository<TDocument>
     public Task ReplaceOneAsync(TDocument document)
     {
         var filter = Builders<TDocument>.Filter.Eq(doc => doc.Id, document.Id);
+        
         return _collection.FindOneAndReplaceAsync(filter, document);
     }
     public Task DeleteByIdAsync(string id)

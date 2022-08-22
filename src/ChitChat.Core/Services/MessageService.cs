@@ -2,6 +2,7 @@
 using ChitChat.Core.BusinessObjects;
 using ChitChat.Core.Documents;
 using ChitChat.Core.Repositories;
+using Microsoft.Extensions.Logging;
 
 namespace ChitChat.Core.Services;
 
@@ -11,14 +12,16 @@ public class MessageService : IMessageService
     private readonly IGroupRepository _groupRepository;
     private readonly IConnectionRepository _connectionRepository;
     private readonly IMapper _mapper;
+    private readonly ILogger<MessageService> _logger;
 
     public MessageService(IMessageRepository messageRepository, IGroupRepository groupRepository,
-        IConnectionRepository connectionRepository, IMapper mapper)
+        IConnectionRepository connectionRepository, IMapper mapper, ILogger<MessageService> logger)
     {
         _messageRespository = messageRepository;
         _groupRepository = groupRepository;
         _connectionRepository = connectionRepository;
         _mapper = mapper;
+        _logger = logger;
     }
 
     public void AddMessage(MessageBusinessObject message)
@@ -33,7 +36,15 @@ public class MessageService : IMessageService
 
     public async void ReplaceGroup(Group group)
     {
-        await _groupRepository.ReplaceOneAsync(group);
+        try
+        {
+            await _groupRepository.ReplaceOneAsync(group);
+
+        }
+        catch(Exception ex)
+        {
+            _logger.LogInformation("Message Services", ex);
+        }
     }
 
     public async void AddConnection(Connection connection)
