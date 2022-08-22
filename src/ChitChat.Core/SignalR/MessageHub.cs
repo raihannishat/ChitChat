@@ -7,22 +7,25 @@ using ChitChat.Core.BusinessObjects;
 using ChitChat.Identity.Services;
 using ChitChat.Core.Repositories;
 using System.Security.Claims;
+using Microsoft.Extensions.Logging;
 
 namespace ChitChat.Core.SignalR;
 
 public class MessageHub : Hub
 {
+	private readonly ILogger<MessageHub> _logger;
 	private readonly IMapper _mapper;
 	private readonly IMessageService _messageService;
 	private readonly IUserService _userService;
 	
 
 	public MessageHub(IMapper mapper, IMessageService messageService, 
-		IUserService userService)
+		IUserService userService, ILogger<MessageHub> logger)
 	{
 		_messageService = messageService;
 		_mapper = mapper;
 		_userService = userService;
+		_logger = logger;
 	}
 
 	public override async Task OnConnectedAsync()
@@ -32,9 +35,8 @@ public class MessageHub : Hub
 		var receiver = httpContext.Request.Query["receiver"].ToString();
 		var groupName = GetGroupName(sender, receiver);
 		await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
-		var group = await AddToGroup(groupName, sender);
-		_messageService.ReplaceGroup(group);
-		await Clients.Group(groupName).SendAsync("UpdatedGroup", group);
+		//var group = await AddToGroup(groupName, sender);
+		//await Clients.Group(groupName).SendAsync("UpdatedGroup", group);
 
 		var messages = await _messageService.
 			GetMessageThread(sender, receiver);
@@ -44,9 +46,9 @@ public class MessageHub : Hub
 
 	public override async Task OnDisconnectedAsync(Exception exception)
 	{
-		var group = await RemoveFromMessageGroup();
+		//var group = await RemoveFromMessageGroup();
 
-		await Clients.Group(group.Name).SendAsync("UpdatedGroup", group);
+		//await Clients.Group(group.Name).SendAsync("UpdatedGroup", group);
 		await base.OnDisconnectedAsync(exception);
 	}
 
@@ -64,23 +66,15 @@ public class MessageHub : Hub
 
 		var message = new MessageBusinessObject
 		{
-			MessageSent = DateTime.Now,
-			Sender = sender,
-			Recipient = recipient,
-			SenderName = sender.Name,
-			RecipientName = recipient.Name,
-			Content = createMessageBusinessObject.Content
+			SenderId = sender.Id,
+			RecipientId = recipient.Id,
+			SenderUsername = sender.Name,
+			RecipientUsername = recipient.Name,
+			Content = createMessageBusinessObject.Content,
+			MessageSent = DateTime.UtcNow
 		};
 
 		var groupName = GetGroupName(sender.Name, recipient.Name);
-
-		//getting group name for finding the receiver connection id to check message already read or not
-		//var group = await _messageService.GetMessageGroup(groupName);
-  //      if (group.Connections.Any(x => x.Username == recipient.Name))
-  //      {
-		//	message.DateRead = DateTime.Now;
-
-		//}
 
 		_messageService.AddMessage(message);
 
@@ -96,14 +90,21 @@ public class MessageHub : Hub
 		if (group == null)
 		{
 			group = new Group(groupName);
+			group.Connections.Add(_mapper.Map<Connection>(connection));
 			_messageService.AddGroup(group);
 		}
-
-		// group.Connections.Add(connection);
-
+		//else
+		//{
+		//	group.Connections.Add(connection);
+		//	var updatedGroup = new Group
+		//	{
+		//		Id = group.Id,
+		//		Name = group.Name,
+		//		Connections = group.Connections
+		//          };
+		//	_messageService.ReplaceGroup(updatedGroup);
+		//}
 		group.Connections.Add(_mapper.Map<Connection>(connection));
-
-		//_messageService.ReplaceGroup(group);
 		_messageService.AddConnection(connection);
 
 		return group;
@@ -121,8 +122,13 @@ public class MessageHub : Hub
 		group.Connections.Remove(connection);
 		_messageService.RemoveConnection(connection);
 
-		_messageService.ReplaceGroup(group);
-
+		var updatedGroup = new Group
+		{
+			Id = group.Id,
+			Name = group.Name,
+			Connections = group.Connections
+		};
+		_messageService.ReplaceGroup(updatedGroup);
 		return group;
 
 		//use try catch instead

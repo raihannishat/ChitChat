@@ -29,25 +29,14 @@ public class MessageRepository : MongoRepository<Documents.Message> , IMessageRe
 		GetMessageThread(string currentUsername, string recipientUsername)
     {
 		var messages = await _collection.AsQueryable()
-			.Where(m => m.Recipient.Name == currentUsername && m.RecipientDeleted == false
-					&& m.Sender.Name == recipientUsername
-					|| m.Recipient.Name == recipientUsername
-					&& m.Sender.Name == currentUsername && m.SenderDeleted == false
+			.Where(m => (m.RecipientUsername == currentUsername
+					&& m.SenderUsername == recipientUsername )
+					|| (m.RecipientUsername == recipientUsername
+					&& m.SenderUsername == currentUsername )
 			)
 			.OrderBy(m => m.MessageSent)
 			//.ProjectTo<BusinessObjects.Message>(_mapper.ConfigurationProvider)
 			.ToListAsync();
-
-		var unreadMessages = messages.Where(m => m.DateRead == null
-			&& m.RecipientUsername == currentUsername).ToList();
-
-		if (unreadMessages.Any())
-		{
-			foreach (var message in unreadMessages)
-			{
-				message.DateRead = DateTime.UtcNow;
-			}
-		}
 
 		return ( _mapper.Map<IList<MessageBusinessObject>>(messages));
 	}
