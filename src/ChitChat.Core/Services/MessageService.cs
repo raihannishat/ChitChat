@@ -9,73 +9,26 @@ namespace ChitChat.Core.Services;
 public class MessageService : IMessageService
 {
     private readonly IMessageRepository _messageRespository;
-    private readonly IGroupRepository _groupRepository;
-    private readonly IConnectionRepository _connectionRepository;
     private readonly IMapper _mapper;
     private readonly ILogger<MessageService> _logger;
 
-    public MessageService(IMessageRepository messageRepository, IGroupRepository groupRepository,
-        IConnectionRepository connectionRepository, IMapper mapper, ILogger<MessageService> logger)
+    public MessageService(IMessageRepository messageRepository,
+        IMapper mapper, ILogger<MessageService> logger)
     {
         _messageRespository = messageRepository;
-        _groupRepository = groupRepository;
-        _connectionRepository = connectionRepository;
         _mapper = mapper;
         _logger = logger;
     }
 
-    public void AddMessage(MessageBusinessObject message)
+    public async Task AddMessage(MessageBusinessObject message)
     {
-        _messageRespository.InsertOneAsync(_mapper.Map<Message>(message));
-    }
-
-    public async void AddGroup(Group group)
-    {
-        await _groupRepository.InsertOneAsync(group);
-    }
-
-    public async void ReplaceGroup(Group group)
-    {
-        try
-        {
-            await _groupRepository.ReplaceOneAsync(group);
-
-        }
-        catch(Exception ex)
-        {
-            _logger.LogInformation("Message Services", ex);
-        }
-    }
-
-    public async void AddConnection(Connection connection)
-    {
-        await _connectionRepository.InsertOneAsync(connection);
-    }
-    public async Task<Connection> GetConnection(string connectionId)
-    {
-        return await _connectionRepository.FindByIdAsync(connectionId);
-    }
-
-    public async Task<Group> GetGroupForConnection(string connectionId)
-    {
-        return await _groupRepository.FindGroupForConnection(connectionId);
-    }
-
-    public async Task<Group> GetMessageGroup(string groupName)
-    {
-        return await _groupRepository.FindMessageGroup(groupName);
+        await _messageRespository.InsertOneAsync(_mapper.Map<Message>(message));
     }
 
     public async void DeleteMessage(Message message)
     {
         await _messageRespository.DeleteByIdAsync(message.Id);
     }
-
-    public async void RemoveConnection(Connection connection)
-    {
-        await _connectionRepository.DeleteByIdAsync(connection.Id);
-    }
-
 
     public async Task<Message> GetMessage(string id)
     {
@@ -87,6 +40,51 @@ public class MessageService : IMessageService
     {
         return await _messageRespository.GetMessageThread(currentUsername, recipientUsername);
     }
+    //public async void AddGroup(Group group)
+    //{
+    //    await _groupRepository.InsertOneAsync(group);
+    //}
 
-   
+    //public async void ReplaceGroup(Group group)
+    //{
+    //    try
+    //    {
+    //        await _groupRepository.ReplaceOneAsync(group);
+
+    //    }
+    //    catch(Exception ex)
+    //    {
+    //        _logger.LogInformation("Message Services", ex);
+    //    }
+    //}
+
+    //public async void AddConnection(Connection connection)
+    //{
+    //    await _connectionRepository.InsertOneAsync(connection);
+    //}
+    //public async Task<Connection> GetConnection(string connectionId)
+    //{
+    //    return await _connectionRepository.FindByIdAsync(connectionId);
+    //}
+
+    //public async Task<Group> GetGroupForConnection(string connectionId)
+    //{
+    //    return await _groupRepository.FindGroupForConnection(connectionId);
+    //}
+
+    //public async Task<Group> GetMessageGroup(string groupName)
+    //{
+    //    return await _groupRepository.FindMessageGroup(groupName);
+    //}
+
+
+
+    //public async void RemoveConnection(Connection connection)
+    //{
+    //    await _connectionRepository.DeleteByIdAsync(connection.Id);
+    //}
+
+
+
+
 }

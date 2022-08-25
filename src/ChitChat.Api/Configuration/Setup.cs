@@ -1,6 +1,7 @@
 ﻿namespace ChitChat.Api.Configuration;
 
 using ChitChat.Core.Dependencies;
+using ChitChat.Core.RabbitMQ;
 using ChitChat.Core.SignalR;
 
 public static class Setup
@@ -31,23 +32,6 @@ public static class Setup
             x.RequireHttpsMetadata = false;
             x.SaveToken = true;
             x.TokenValidationParameters = tokenValidationParameters;
-
-			//x.Events = new JwtBearerEvents
-			//{
-			//	OnMessageReceived = context =>
-			//	{
-			//		var accessToken = context.Request.Query["access_token"];
-
-			//		var path = context.HttpContext.Request.Path;
-			//		if (!string.IsNullOrEmpty(accessToken) &&
-			//			path.StartsWithSegments("/hubs"))
-			//		{
-			//			context.Token = accessToken;
-			//		}
-
-			//		return Task.CompletedTask;
-			//	}
-			//};
 		});
 
         builder.Services.AddSingleton(tokenValidationParameters);
@@ -96,8 +80,9 @@ public static class Setup
         builder.Services.AddCors();
     }
 
-    public static void Configure(this WebApplication app )
+    public static void Configure(this WebApplication app, IApplicationBuilder appBuilder)
     {
+       
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
@@ -120,7 +105,9 @@ public static class Setup
         app.UseAuthorization();
         app.MapControllers();
 		app.MapHub<MessageHub>("hubs/message");
-	}
+      
+        app.Lifetime.ApplicationStarted.Register(() => RegisterSignalRWithRabbitMQ(appBuilder.ApplicationServices));
+    }
 
     public static void ConfigureLogger(this WebApplicationBuilder builder)
     {
@@ -129,6 +116,15 @@ public static class Setup
             .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
             .Enrich.FromLogContext()
             .ReadFrom.Configuration(builder.Configuration));
+    }
+
+    public static void RegisterSignalRWithRabbitMQ(IServiceProvider serviceProvider)
+    {
+        var signalRConsumer = (ISignalRConsumer)serviceProvider.GetService(typeof(ISignalRConsumer));
+        signalRConsumer.Connect();
+
+        var dbConsumer = (IDBConsumer)serviceProvider.GetService(typeof(IDBConsumer));
+        dbConsumer.Connect();
     }
 
 }

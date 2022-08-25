@@ -1,4 +1,6 @@
-﻿using ChitChat.Core.Repositories;
+﻿using ChitChat.Core.RabbitMQ;
+using ChitChat.Core.RabbitMQ.Models;
+using ChitChat.Core.Repositories;
 using ChitChat.Core.Services;
 using ChitChat.Data.Configurations;
 using ChitChat.Data.Services;
@@ -12,7 +14,11 @@ public static class DependencyResolver
 	{
 		services.AddScoped<IConnectionRepository, ConnectionRepository>();
 		services.AddScoped<IGroupRepository, GroupRepository>();
-		services.AddScoped<IMessageRepository, MessageRepository>();
-		services.AddScoped<IMessageService, MessageService>();
+		services.AddSingleton<IMessageRepository, MessageRepository>();
+		services.AddSingleton<IMessageService, MessageService>();
+		services.AddSingleton<ISignalRConsumer, SignalRConsumer>();
+		services.AddSingleton<IDBConsumer, DBConsumer>();
+		services.AddScoped<IRabbitMQPublisher, RabbitMQPublisher>();
+		services.AddSingleton<ExchangerQueueSetting>();
 	}
 }

@@ -4,9 +4,10 @@ builder.ConfigureLogger();
 
 builder.ConfgiureServices();
 
+
 var app = builder.Build();
 
-app.Configure();
+app.Configure(app);
 
 try
 {

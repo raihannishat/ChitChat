@@ -8,6 +8,7 @@ using ChitChat.Identity.Services;
 using ChitChat.Core.Repositories;
 using System.Security.Claims;
 using Microsoft.Extensions.Logging;
+using ChitChat.Core.RabbitMQ;
 
 namespace ChitChat.Core.SignalR;
 
@@ -17,14 +18,16 @@ public class MessageHub : Hub
 	private readonly IMapper _mapper;
 	private readonly IMessageService _messageService;
 	private readonly IUserService _userService;
+	private readonly IRabbitMQPublisher _rabbitMQpublisher;
 	
 
 	public MessageHub(IMapper mapper, IMessageService messageService, 
-		IUserService userService, ILogger<MessageHub> logger)
+		IUserService userService, ILogger<MessageHub> logger, IRabbitMQPublisher rabbitMQPublisher)
 	{
 		_messageService = messageService;
 		_mapper = mapper;
 		_userService = userService;
+		_rabbitMQpublisher = rabbitMQPublisher;
 		_logger = logger;
 	}
 
@@ -74,25 +77,27 @@ public class MessageHub : Hub
 			MessageSent = DateTime.UtcNow
 		};
 
-		var groupName = GetGroupName(sender.Name, recipient.Name);
+		await _rabbitMQpublisher.SendMessageToQueue(_mapper.Map<Message>(message));
 
-		_messageService.AddMessage(message);
+		//var groupName = GetGroupName(sender.Name, recipient.Name);
 
-		await Clients.Group(groupName).SendAsync("NewMessage", _mapper.Map<MessageBusinessObject>(message));
+		//await _messageService.AddMessage(message);
+
+		//await Clients.Group(groupName).SendAsync("NewMessage",message);
 		
 	}
 
-	private async Task<Group> AddToGroup(string groupName, string sender)
-	{
-		var group = await _messageService.GetMessageGroup(groupName);
-		var connection = new Connection(Context.ConnectionId, sender);
+	//private async Task<Group> AddToGroup(string groupName, string sender)
+	//{
+	//	var group = await _messageService.GetMessageGroup(groupName);
+	//	var connection = new Connection(Context.ConnectionId, sender);
 
-		if (group == null)
-		{
-			group = new Group(groupName);
-			group.Connections.Add(_mapper.Map<Connection>(connection));
-			_messageService.AddGroup(group);
-		}
+	//	if (group == null)
+	//	{
+	//		group = new Group(groupName);
+	//		group.Connections.Add(_mapper.Map<Connection>(connection));
+	//		_messageService.AddGroup(group);
+	//	}
 		//else
 		//{
 		//	group.Connections.Add(connection);
@@ -104,36 +109,36 @@ public class MessageHub : Hub
 		//          };
 		//	_messageService.ReplaceGroup(updatedGroup);
 		//}
-		group.Connections.Add(_mapper.Map<Connection>(connection));
-		_messageService.AddConnection(connection);
+	//	group.Connections.Add(_mapper.Map<Connection>(connection));
+	//	_messageService.AddConnection(connection);
 
-		return group;
+	//	return group;
 
-		//use try catch instead
-		//throw new HubException("Failed to join group");
-	}
+	//	//use try catch instead
+	//	//throw new HubException("Failed to join group");
+	//}
 
-	private async Task<Group> RemoveFromMessageGroup()
-	{
-		var group = await _messageService.GetGroupForConnection(Context.ConnectionId);
-		var connection = group.Connections.FirstOrDefault(x => 
-									x.ConnectionId == Context.ConnectionId);
+	//private async Task<Group> RemoveFromMessageGroup()
+	//{
+	//	var group = await _messageService.GetGroupForConnection(Context.ConnectionId);
+	//	var connection = group.Connections.FirstOrDefault(x => 
+	//								x.ConnectionId == Context.ConnectionId);
 
-		group.Connections.Remove(connection);
-		_messageService.RemoveConnection(connection);
+	//	group.Connections.Remove(connection);
+	//	_messageService.RemoveConnection(connection);
 
-		var updatedGroup = new Group
-		{
-			Id = group.Id,
-			Name = group.Name,
-			Connections = group.Connections
-		};
-		_messageService.ReplaceGroup(updatedGroup);
-		return group;
+	//	var updatedGroup = new Group
+	//	{
+	//		Id = group.Id,
+	//		Name = group.Name,
+	//		Connections = group.Connections
+	//	};
+	//	_messageService.ReplaceGroup(updatedGroup);
+	//	return group;
 
 		//use try catch instead
 		//throw new HubException("Failed to remove from group");
-	}
+	//}
 
 	private string GetGroupName(string caller, string other)
 	{
