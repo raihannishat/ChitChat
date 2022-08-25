@@ -1,8 +1,8 @@
-﻿using ChitChat.Core.Documents;
+﻿using ChitChat.Infrastructure.Documents;
 using ChitChat.Data.Configurations;
 using ChitChat.Data.Repositories;
 
-namespace ChitChat.Core.Repositories;
+namespace ChitChat.Infrastructure.Repositories;
 
 public class ConnectionRepository : MongoRepository<Documents.Connection> , IConnectionRepository
 {

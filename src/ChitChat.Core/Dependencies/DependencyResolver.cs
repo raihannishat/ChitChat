@@ -1,12 +1,12 @@
-﻿using ChitChat.Core.RabbitMQ;
-using ChitChat.Core.RabbitMQ.Models;
-using ChitChat.Core.Repositories;
-using ChitChat.Core.Services;
+﻿using ChitChat.Infrastructure.RabbitMQ;
+using ChitChat.Infrastructure.RabbitMQ.Models;
+using ChitChat.Infrastructure.Repositories;
+using ChitChat.Infrastructure.Services;
 using ChitChat.Data.Configurations;
 using ChitChat.Data.Services;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace ChitChat.Core.Dependencies;
+namespace ChitChat.Infrastructure.Dependencies;
 
 public static class DependencyResolver
 {

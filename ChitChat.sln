@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{2683F2DF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChitChat.Api", "src\ChitChat.Api\ChitChat.Api.csproj", "{2963E9A4-AE6E-497D-8AD3-C56D27742FFD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChitChat.Core", "src\ChitChat.Core\ChitChat.Core.csproj", "{89BB7FC1-2F15-408E-90EC-F70C974D5BC9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChitChat.Infrastructure", "src\ChitChat.Core\ChitChat.Infrastructure.csproj", "{89BB7FC1-2F15-408E-90EC-F70C974D5BC9}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChitChat.Data", "src\ChitChat.Data\ChitChat.Data.csproj", "{D19F8B9C-21AC-4382-A3B1-F5B466AECA24}"
 EndProject

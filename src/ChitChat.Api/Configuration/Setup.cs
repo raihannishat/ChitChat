@@ -1,8 +1,8 @@
 ﻿namespace ChitChat.Api.Configuration;
 
-using ChitChat.Core.Dependencies;
-using ChitChat.Core.RabbitMQ;
-using ChitChat.Core.SignalR;
+using ChitChat.Infrastructure.Dependencies;
+using ChitChat.Infrastructure.RabbitMQ;
+using ChitChat.Infrastructure.SignalR;
 
 public static class Setup
 {
@@ -32,7 +32,7 @@ public static class Setup
             x.RequireHttpsMetadata = false;
             x.SaveToken = true;
             x.TokenValidationParameters = tokenValidationParameters;
-		});
+        });
 
         builder.Services.AddSingleton(tokenValidationParameters);
         builder.Services.AddSingleton<IConnectionMultiplexer>(x =>
@@ -65,16 +65,16 @@ public static class Setup
                 new string[] {}
             }
             });
-		});
+        });
 
         builder.Services.AddSignalR(hubOptions =>
         {
-			hubOptions.EnableDetailedErrors = true;
+            hubOptions.EnableDetailedErrors = true;
             hubOptions.MaximumReceiveMessageSize = 102400000;
         });
 
         builder.Services.CoreResolver();
-		builder.Services.IdentityResolver();
+        builder.Services.IdentityResolver();
         builder.Services.DataResolver();
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddCors();
@@ -82,30 +82,30 @@ public static class Setup
 
     public static void Configure(this WebApplication app, IApplicationBuilder appBuilder)
     {
-       
+
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
             app.UseSwaggerUI();
         }
 
-		//app.UseCors(options => options
-		//    .WithOrigins("http://localhost:4200")
-		//    .AllowAnyHeader()
-		//    .AllowAnyMethod());
+        //app.UseCors(options => options
+        //    .WithOrigins("http://localhost:4200")
+        //    .AllowAnyHeader()
+        //    .AllowAnyMethod());
 
-		app.UseCors(x => x
+        app.UseCors(x => x
             .AllowAnyHeader()
-	        .AllowAnyMethod()
-	        .AllowCredentials()
-	        .WithOrigins("http://localhost:4200"));
+            .AllowAnyMethod()
+            .AllowCredentials()
+            .WithOrigins("http://localhost:4200"));
 
-		app.UseHttpsRedirection();
+        app.UseHttpsRedirection();
         app.UseAuthentication();
         app.UseAuthorization();
         app.MapControllers();
-		app.MapHub<MessageHub>("hubs/message");
-      
+        app.MapHub<MessageHub>("hubs/message");
+
         app.Lifetime.ApplicationStarted.Register(() => RegisterSignalRWithRabbitMQ(appBuilder.ApplicationServices));
     }
 
@@ -126,5 +126,4 @@ public static class Setup
         var dbConsumer = (IDBConsumer)serviceProvider.GetService(typeof(IDBConsumer));
         dbConsumer.Connect();
     }
-
 }

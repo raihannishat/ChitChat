@@ -1,16 +1,14 @@
 ﻿using AutoMapper;
-using ChitChat.Core.Documents;
-using Microsoft.AspNetCore.SignalR;
-using ChitChat.Core.Services;
-using ChitChat.Core.Extentions;
-using ChitChat.Core.BusinessObjects;
 using ChitChat.Identity.Services;
-using ChitChat.Core.Repositories;
-using System.Security.Claims;
+using ChitChat.Infrastructure.DTOs;
+using ChitChat.Infrastructure.Documents;
+using ChitChat.Infrastructure.DTOs;
+using ChitChat.Infrastructure.RabbitMQ;
+using ChitChat.Infrastructure.Services;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
-using ChitChat.Core.RabbitMQ;
 
-namespace ChitChat.Core.SignalR;
+namespace ChitChat.Infrastructure.SignalR;
 
 public class MessageHub : Hub
 {
@@ -19,9 +17,9 @@ public class MessageHub : Hub
 	private readonly IMessageService _messageService;
 	private readonly IUserService _userService;
 	private readonly IRabbitMQPublisher _rabbitMQpublisher;
-	
 
-	public MessageHub(IMapper mapper, IMessageService messageService, 
+
+	public MessageHub(IMapper mapper, IMessageService messageService,
 		IUserService userService, ILogger<MessageHub> logger, IRabbitMQPublisher rabbitMQPublisher)
 	{
 		_messageService = messageService;
@@ -32,7 +30,7 @@ public class MessageHub : Hub
 	}
 
 	public override async Task OnConnectedAsync()
-	{	
+	{
 		var httpContext = Context.GetHttpContext();
 		var sender = httpContext.Request.Query["sender"].ToString();
 		var receiver = httpContext.Request.Query["receiver"].ToString();
@@ -55,25 +53,25 @@ public class MessageHub : Hub
 		await base.OnDisconnectedAsync(exception);
 	}
 
-	public async Task SendMessage(CreateMessageBusinessObject createMessageBusinessObject)
+	public async Task SendMessage(CreateMessageDTO createMessageDTO)
 	{
-		var username = createMessageBusinessObject.Sender;
-		
-		if (username == createMessageBusinessObject.Receiver.ToLower())
+		var username = createMessageDTO.Sender;
+
+		if (username == createMessageDTO.Receiver.ToLower())
 			throw new HubException("You cannot send messages to yourself");
 
 		var sender = await _userService.GetUserByNameAsync(username);
-		var recipient = await _userService.GetUserByNameAsync(createMessageBusinessObject.Receiver);
+		var recipient = await _userService.GetUserByNameAsync(createMessageDTO.Receiver);
 
 		if (recipient == null) throw new HubException("Not found user");
 
-		var message = new MessageBusinessObject
+		var message = new MessageDTO
 		{
 			SenderId = sender.Id,
 			RecipientId = recipient.Id,
 			SenderUsername = sender.Name,
 			RecipientUsername = recipient.Name,
-			Content = createMessageBusinessObject.Content,
+			Content = createMessageDTO.Content,
 			MessageSent = DateTime.UtcNow
 		};
 
@@ -84,7 +82,7 @@ public class MessageHub : Hub
 		//await _messageService.AddMessage(message);
 
 		//await Clients.Group(groupName).SendAsync("NewMessage",message);
-		
+
 	}
 
 	//private async Task<Group> AddToGroup(string groupName, string sender)
@@ -98,17 +96,17 @@ public class MessageHub : Hub
 	//		group.Connections.Add(_mapper.Map<Connection>(connection));
 	//		_messageService.AddGroup(group);
 	//	}
-		//else
-		//{
-		//	group.Connections.Add(connection);
-		//	var updatedGroup = new Group
-		//	{
-		//		Id = group.Id,
-		//		Name = group.Name,
-		//		Connections = group.Connections
-		//          };
-		//	_messageService.ReplaceGroup(updatedGroup);
-		//}
+	//else
+	//{
+	//	group.Connections.Add(connection);
+	//	var updatedGroup = new Group
+	//	{
+	//		Id = group.Id,
+	//		Name = group.Name,
+	//		Connections = group.Connections
+	//          };
+	//	_messageService.ReplaceGroup(updatedGroup);
+	//}
 	//	group.Connections.Add(_mapper.Map<Connection>(connection));
 	//	_messageService.AddConnection(connection);
 
@@ -136,8 +134,8 @@ public class MessageHub : Hub
 	//	_messageService.ReplaceGroup(updatedGroup);
 	//	return group;
 
-		//use try catch instead
-		//throw new HubException("Failed to remove from group");
+	//use try catch instead
+	//throw new HubException("Failed to remove from group");
 	//}
 
 	private string GetGroupName(string caller, string other)

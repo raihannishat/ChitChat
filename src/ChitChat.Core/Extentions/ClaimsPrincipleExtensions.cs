@@ -5,7 +5,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChitChat.Core.Extentions;
+namespace ChitChat.Infrastructure.Extentions;
 public static class ClaimsPrincipleExtensions
 {
 	public static string GetUsername(this ClaimsPrincipal user)

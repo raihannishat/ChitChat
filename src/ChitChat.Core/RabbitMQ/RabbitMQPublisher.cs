@@ -1,5 +1,5 @@
-﻿using ChitChat.Core.Documents;
-using ChitChat.Core.RabbitMQ.Models;
+﻿using ChitChat.Infrastructure.Documents;
+using ChitChat.Infrastructure.RabbitMQ.Models;
 using RabbitMQ.Client;
 using System;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace ChitChat.Core.RabbitMQ;
+namespace ChitChat.Infrastructure.RabbitMQ;
 public class RabbitMQPublisher : IRabbitMQPublisher
 {
     private readonly ConnectionFactory _factory;

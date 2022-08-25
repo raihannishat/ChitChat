@@ -1,13 +1,13 @@
 ﻿using AutoMapper;
 using AutoMapper.QueryableExtensions;
-using ChitChat.Core.BusinessObjects;
-using ChitChat.Core.Documents;
+using ChitChat.Infrastructure.DTOs;
+using ChitChat.Infrastructure.Documents;
 using ChitChat.Data.Configurations;
 using ChitChat.Data.Repositories;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 
-namespace ChitChat.Core.Repositories;
+namespace ChitChat.Infrastructure.Repositories;
 
 public class MessageRepository : MongoRepository<Documents.Message> , IMessageRepository
 {
@@ -25,7 +25,7 @@ public class MessageRepository : MongoRepository<Documents.Message> , IMessageRe
             .SingleOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<IList<BusinessObjects.MessageBusinessObject>>
+    public async Task<IList<DTOs.MessageDTO>>
 		GetMessageThread(string currentUsername, string recipientUsername)
     {
 		var messages = await _collection.AsQueryable()
@@ -35,9 +35,9 @@ public class MessageRepository : MongoRepository<Documents.Message> , IMessageRe
 					&& m.SenderUsername == currentUsername )
 			)
 			.OrderBy(m => m.MessageSent)
-			//.ProjectTo<BusinessObjects.Message>(_mapper.ConfigurationProvider)
+			//.ProjectTo<DTOs.Message>(_mapper.ConfigurationProvider)
 			.ToListAsync();
 
-		return ( _mapper.Map<IList<MessageBusinessObject>>(messages));
+		return ( _mapper.Map<IList<MessageDTO>>(messages));
 	}
 }

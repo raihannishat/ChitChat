@@ -1,6 +1,6 @@
-﻿using ChitChat.Core.Documents;
-using ChitChat.Core.RabbitMQ.Models;
-using ChitChat.Core.SignalR;
+﻿using ChitChat.Infrastructure.Documents;
+using ChitChat.Infrastructure.RabbitMQ.Models;
+using ChitChat.Infrastructure.SignalR;
 using Microsoft.AspNetCore.SignalR;
 using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
@@ -11,7 +11,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace ChitChat.Core.RabbitMQ;
+namespace ChitChat.Infrastructure.RabbitMQ;
 public class SignalRConsumer : ISignalRConsumer
 {
     private readonly IServiceProvider _serviceProvider;

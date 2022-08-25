@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
-using ChitChat.Core.Documents;
-using ChitChat.Core.RabbitMQ.Models;
-using ChitChat.Core.Services;
-using ChitChat.Core.SignalR;
+using ChitChat.Infrastructure.Documents;
+using ChitChat.Infrastructure.RabbitMQ.Models;
+using ChitChat.Infrastructure.Services;
+using ChitChat.Infrastructure.SignalR;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using RabbitMQ.Client;
@@ -14,7 +14,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
-namespace ChitChat.Core.RabbitMQ;
+namespace ChitChat.Infrastructure.RabbitMQ;
 public class DBConsumer : IDBConsumer
 {
     private readonly IServiceProvider _serviceProvider;
@@ -58,7 +58,7 @@ public class DBConsumer : IDBConsumer
 
                 Console.WriteLine(databaseQueue + "got message --->" + message);
 
-                await _messageService.AddMessage(_mapper.Map<BusinessObjects.MessageBusinessObject>(message));
+                await _messageService.AddMessage(_mapper.Map<DTOs.MessageDTO>(message));
             }
             catch(Exception ex)
             {

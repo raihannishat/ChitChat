@@ -1,4 +1,4 @@
-﻿namespace ChitChat.Core.RabbitMQ;
+﻿namespace ChitChat.Infrastructure.RabbitMQ;
 
 public interface IDBConsumer
 {

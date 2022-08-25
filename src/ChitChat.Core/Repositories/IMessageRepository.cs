@@ -1,12 +1,12 @@
-﻿using ChitChat.Core.Documents;
-using ChitChat.Core.BusinessObjects;
+﻿using ChitChat.Infrastructure.Documents;
+using ChitChat.Infrastructure.DTOs;
 using ChitChat.Data.Repositories;
 
-namespace ChitChat.Core.Repositories;
+namespace ChitChat.Infrastructure.Repositories;
 
 public interface IMessageRepository : IRepository<Documents.Message>
 {
     Task<Message> GetMessage(string id);
-	Task<IList<MessageBusinessObject>> GetMessageThread(string currentUsername,
+	Task<IList<MessageDTO>> GetMessageThread(string currentUsername,
 		string recipientUsername);
 }

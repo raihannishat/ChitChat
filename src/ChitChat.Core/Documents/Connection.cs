@@ -1,7 +1,7 @@
 ﻿using ChitChat.Data.Configurations;
 using ChitChat.Data.Documents;
 
-namespace ChitChat.Core.Documents;
+namespace ChitChat.Infrastructure.Documents;
 
 [BsonCollection("Connections")]
 

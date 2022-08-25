@@ -1,10 +1,10 @@
-﻿using ChitChat.Core.Documents;
+﻿using ChitChat.Infrastructure.Documents;
 using ChitChat.Data.Configurations;
 using ChitChat.Data.Repositories;
 using MongoDB.Driver;
 using MongoDB.Driver.Linq;
 
-namespace ChitChat.Core.Repositories;
+namespace ChitChat.Infrastructure.Repositories;
 
 public class GroupRepository : MongoRepository<Group> , IGroupRepository
 {

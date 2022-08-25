@@ -1,10 +1,10 @@
 ﻿using AutoMapper;
-using ChitChat.Core.BusinessObjects;
-using ChitChat.Core.Documents;
-using ChitChat.Core.Repositories;
+using ChitChat.Infrastructure.DTOs;
+using ChitChat.Infrastructure.Documents;
+using ChitChat.Infrastructure.Repositories;
 using Microsoft.Extensions.Logging;
 
-namespace ChitChat.Core.Services;
+namespace ChitChat.Infrastructure.Services;
 
 public class MessageService : IMessageService
 {
@@ -20,7 +20,7 @@ public class MessageService : IMessageService
         _logger = logger;
     }
 
-    public async Task AddMessage(MessageBusinessObject message)
+    public async Task AddMessage(MessageDTO message)
     {
         await _messageRespository.InsertOneAsync(_mapper.Map<Message>(message));
     }
@@ -35,7 +35,7 @@ public class MessageService : IMessageService
         return await _messageRespository.GetMessage(id);
     }
 
-    public async Task<IEnumerable<MessageBusinessObject>> GetMessageThread(string currentUsername,
+    public async Task<IEnumerable<MessageDTO>> GetMessageThread(string currentUsername,
         string recipientUsername)
     {
         return await _messageRespository.GetMessageThread(currentUsername, recipientUsername);

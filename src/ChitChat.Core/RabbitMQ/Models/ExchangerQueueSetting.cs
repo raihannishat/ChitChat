@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ChitChat.Core.RabbitMQ.Models;
+namespace ChitChat.Infrastructure.RabbitMQ.Models;
 public class ExchangerQueueSetting
 {
     public string DatabaseQueue { get { return "database"; } }

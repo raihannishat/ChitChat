@@ -1,7 +1,7 @@
-﻿using ChitChat.Core.Documents;
+﻿using ChitChat.Infrastructure.Documents;
 using ChitChat.Data.Repositories;
 
-namespace ChitChat.Core.Repositories;
+namespace ChitChat.Infrastructure.Repositories;
 
 public interface IConnectionRepository : IRepository<Connection>
 {

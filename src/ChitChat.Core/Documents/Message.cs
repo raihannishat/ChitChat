@@ -2,7 +2,7 @@
 using ChitChat.Data.Documents;
 using ChitChat.Identity.Documents;
 
-namespace ChitChat.Core.Documents;
+namespace ChitChat.Infrastructure.Documents;
 
 [BsonCollection("Messages")]
 public class Message : Document
