@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ChatComponent } from './component/chat/chat.component';
+import { ChitchatComponent } from './component/chitchat/chitchat.component';
 import { LoginComponent } from './component/login/login.component';
 import { MemberMessageComponent } from './component/member-message/member-message.component';
 import { RegistrationComponent } from './component/registration/registration.component';
@@ -31,6 +32,10 @@ const routes: Routes = [
     path: 'message/:username',
     component: MemberMessageComponent,
     canActivate: [AuthGuard],
+  },
+  {
+    path: 'onlineUsers',
+    component: ChitchatComponent,
   },
 ];
 

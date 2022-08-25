@@ -9,10 +9,10 @@ import { ActiveUsersService } from 'src/app/services/active-users.service';
 })
 export class ChatComponent implements OnInit {
   activeUsers: ActiveUser[] = [];
-  constructor(private activeUserServie: ActiveUsersService) {}
+  constructor(private activeUserService: ActiveUsersService) {}
 
   ngOnInit(): void {
-    this.activeUserServie.activeUsersList().subscribe((response) => {
+    this.activeUserService.activeUsersList().subscribe((response) => {
       this.activeUsers = response;
     });
   }

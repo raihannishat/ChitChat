@@ -37,6 +37,7 @@ import { RefreshTokenService } from './services/Auth/refresh-token.service';
 import { ChatComponent } from './component/chat/chat.component';
 import { HeaderComponent } from './component/header/header.component';
 import { MemberMessageComponent } from './component/member-message/member-message.component';
+import { ChitchatComponent } from './component/chitchat/chitchat.component';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import { MemberMessageComponent } from './component/member-message/member-messag
     ChatComponent,
     HeaderComponent,
     MemberMessageComponent,
+    ChitchatComponent,
   ],
   imports: [
     BrowserModule,
