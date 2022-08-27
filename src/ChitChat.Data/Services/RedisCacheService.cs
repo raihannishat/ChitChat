@@ -3,20 +3,23 @@
 public class RedisCacheService : ICacheService
 {
     private readonly IConnectionMultiplexer _connectionMultiplexer;
+
     public RedisCacheService(IConnectionMultiplexer connectionMultiplexer)
     {
         _connectionMultiplexer = connectionMultiplexer;
     }
 
-    public List<string> GetAllKeysAsync()
+    public List<string> GetAllKeys()
     {
         var pattern = "DIU_Raizor";
 
         var keys = _connectionMultiplexer
-            .GetServer("localhost", 6379).Keys(0, pattern + "*").ToList();
-        
+            .GetServer("localhost", 6379)
+            .Keys(0, pattern + "*")
+            .ToList();
+
         var strings = string.Join("", keys);
-        
+
         var list = strings.Split("DIU_Raizor:").ToList();
 
         list.RemoveAt(0);

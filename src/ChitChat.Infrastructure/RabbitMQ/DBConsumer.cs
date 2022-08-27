@@ -1,20 +1,5 @@
-﻿using AutoMapper;
-using ChitChat.Infrastructure.Documents;
-using ChitChat.Infrastructure.RabbitMQ.Models;
-using ChitChat.Infrastructure.Services;
-using ChitChat.Infrastructure.SignalR;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Logging;
-using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿namespace ChitChat.Infrastructure.RabbitMQ;
 
-namespace ChitChat.Infrastructure.RabbitMQ;
 public class DBConsumer : IDBConsumer
 {
     private readonly IServiceProvider _serviceProvider;
@@ -49,9 +34,9 @@ public class DBConsumer : IDBConsumer
 
         consumer.Received += async (model, ea) =>
         {
-
             var body = ea.Body.ToArray();
             var data = Encoding.UTF8.GetString(body);
+
             try
             {
                 var message = JsonSerializer.Deserialize<Message>(data);
@@ -60,11 +45,12 @@ public class DBConsumer : IDBConsumer
 
                 await _messageService.AddMessage(_mapper.Map<DTOs.MessageDTO>(message));
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogInformation("DbConsumer : " + ex);
             }
         };
+
         _channel.BasicConsume(databaseQueue, true, consumer);
     }
 }

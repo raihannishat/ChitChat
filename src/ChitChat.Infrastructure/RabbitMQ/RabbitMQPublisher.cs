@@ -1,23 +1,16 @@
-﻿using ChitChat.Infrastructure.Documents;
-using ChitChat.Infrastructure.RabbitMQ.Models;
-using RabbitMQ.Client;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿namespace ChitChat.Infrastructure.RabbitMQ;
 
-namespace ChitChat.Infrastructure.RabbitMQ;
 public class RabbitMQPublisher : IRabbitMQPublisher
 {
     private readonly ConnectionFactory _factory;
     private readonly ExchangerQueueSetting _exchangerQueueSetting;
+
     public RabbitMQPublisher(ExchangerQueueSetting exchangerQueueSetting)
     {
         _exchangerQueueSetting = exchangerQueueSetting;
         _factory = new ConnectionFactory() { HostName = "localhost" };
     }
+
     public Task SendMessageToQueue(Message message)
     {
         string databaseQueue = _exchangerQueueSetting.DatabaseQueue;
@@ -46,6 +39,4 @@ public class RabbitMQPublisher : IRabbitMQPublisher
 
         return Task.CompletedTask;
     }
-
- 
 }

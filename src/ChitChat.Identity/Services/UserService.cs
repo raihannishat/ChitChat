@@ -26,13 +26,12 @@ public class UserService : IUserService
 
     public async Task<User> GetUserByEmailAsync(string email)
     {
-       return await _userRepository.FindOneAsync(user => user.Email == email);
+        return await _userRepository.FindOneAsync(user => user.Email == email);
     }
 
     public async Task<User> GetUserByIdAsync(string id)
     {
         return await _userRepository.FindOneAsync(user => user.Id == id);
-
     }
 
     public async Task<User> GetUserByNameAsync(string name)

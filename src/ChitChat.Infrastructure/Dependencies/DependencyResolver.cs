@@ -1,16 +1,8 @@
-﻿using ChitChat.Infrastructure.RabbitMQ;
-using ChitChat.Infrastructure.RabbitMQ.Models;
-using ChitChat.Infrastructure.Repositories;
-using ChitChat.Infrastructure.Services;
-using ChitChat.Data.Configurations;
-using ChitChat.Data.Services;
-using Microsoft.Extensions.DependencyInjection;
-
-namespace ChitChat.Infrastructure.Dependencies;
+﻿namespace ChitChat.Infrastructure.Dependencies;
 
 public static class DependencyResolver
 {
-	public static void CoreResolver(this IServiceCollection services)
+	public static void InfrastructureResolver(this IServiceCollection services)
 	{
 		services.AddScoped<IConnectionRepository, ConnectionRepository>();
 		services.AddScoped<IGroupRepository, GroupRepository>();

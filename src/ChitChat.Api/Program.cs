@@ -1,12 +1,9 @@
 var builder = WebApplication.CreateBuilder(args);
 
 builder.ConfigureLogger();
-
 builder.ConfgiureServices();
 
-
 var app = builder.Build();
-
 app.Configure(app);
 
 try

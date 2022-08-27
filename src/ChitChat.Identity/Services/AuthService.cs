@@ -1,12 +1,13 @@
 ﻿namespace ChitChat.Identity.Services;
 
-public  class AuthService : IAuthService
+public class AuthService : IAuthService
 {
-    private readonly string? _key;
+    private readonly string _key;
     private readonly IUserRepository _userRepository;
     private readonly IAuthRepository _authRepository;
     private readonly ITokenHelper _tokenHelper;
     private readonly IMapper _mapper;
+
     public AuthService(IConfiguration configuration, IAuthRepository authRepository, IUserRepository userRepository,
         IMapper mapper, ITokenHelper tokenHelper)
     {
@@ -17,13 +18,14 @@ public  class AuthService : IAuthService
         _tokenHelper = tokenHelper;
     }
 
-    public async Task SignUpAsync(UserSignUp user)
+    public async Task SignUpAsync(UserSignUpDTO user)
     {
         user.Password = SHA_256.ComputeHash(user.Password);
 
         await _userRepository.InsertOneAsync(_mapper.Map<User>(user));
     }
-    public async Task<AuthenticationResult> SignInAsync(UserSignIn user)
+
+    public async Task<AuthenticationResult> SignInAsync(UserSignInDTO user)
     {
         var password = SHA_256.ComputeHash(user.Password);
         var existingUser = await _userRepository.FindOneAsync(x => x.Name == user.Name && x.Password == password);
@@ -36,6 +38,7 @@ public  class AuthService : IAuthService
                 Errors = new[] { "Invalid username/password" }
             };
         }
+
         return await GenerateTokenAsync(existingUser);
     }
 
@@ -49,18 +52,18 @@ public  class AuthService : IAuthService
         {
             Subject = new ClaimsIdentity(new Claim[]
             {
-                    new Claim("Id", user.Id),
-                    new Claim(JwtRegisteredClaimNames.Sub, user.Name),
-                    new Claim(JwtRegisteredClaimNames.Email, user.Email),
-                    new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                    new Claim(JwtRegisteredClaimNames.UniqueName, user.Name)
+                new Claim("Id", user.Id),
+                new Claim(JwtRegisteredClaimNames.Sub, user.Name),
+                new Claim(JwtRegisteredClaimNames.Email, user.Email),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+                new Claim(JwtRegisteredClaimNames.UniqueName, user.Name)
             }),
 
             Expires = DateTime.UtcNow.AddSeconds(60),
+
             SigningCredentials = new SigningCredentials(
                 new SymmetricSecurityKey(tokenKey),
-                SecurityAlgorithms.HmacSha256Signature
-                )
+                SecurityAlgorithms.HmacSha256Signature)
         };
 
         var token = tokenHandlder.CreateToken(tokenDescriptor);
@@ -92,6 +95,7 @@ public  class AuthService : IAuthService
     public async Task<AuthenticationResult> RefreshTokenAsync(string token, string refreshToken)
     {
         var validatedToken = _tokenHelper.GetPrincipalFromToken(token);
+
         if (validatedToken == null)
         {
             return new AuthenticationResult
@@ -99,6 +103,7 @@ public  class AuthService : IAuthService
                 Errors = new[] { "Invalid Token" }
             };
         }
+
         var expiryDateUnix = long.Parse(validatedToken.Claims.Single(
             x => x.Type == JwtRegisteredClaimNames.Exp).Value);
 
@@ -115,6 +120,7 @@ public  class AuthService : IAuthService
         //var filter = Builders<RefreshToken>.Filter.Eq("Token", refreshToken);
 
         var storedRefreshToken = await _authRepository.FindOneAsync(x => x.Token == refreshToken);
+
         if (storedRefreshToken == null)
         {
             return new AuthenticationResult { Errors = new[] { "This refresh token doesn't exist" } };
@@ -128,7 +134,6 @@ public  class AuthService : IAuthService
         if (storedRefreshToken.Invalidate)
         {
             return new AuthenticationResult { Errors = new[] { "This refresh token has invalidated" } };
-
         }
 
         if (storedRefreshToken.Used)
@@ -142,6 +147,7 @@ public  class AuthService : IAuthService
         }
 
         storedRefreshToken.Used = true;
+
         await _authRepository.ReplaceOneAsync(storedRefreshToken);
 
         //finding user id

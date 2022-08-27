@@ -1,6 +1,6 @@
 ﻿namespace ChitChat.Identity.Validation;
 
-public class UserSingUpValidation : AbstractValidator<UserSignUp>
+public class UserSingUpValidation : AbstractValidator<UserSignUpDTO>
 {
     public UserSingUpValidation()
     {

@@ -1,7 +1,5 @@
-﻿using Microsoft.IdentityModel.Tokens;
-using System.Security.Claims;
+﻿namespace ChitChat.Identity.Utilities;
 
-namespace ChitChat.Identity.Utilities;
 public interface ITokenHelper
 {
     ClaimsPrincipal GetPrincipalFromToken(string token);

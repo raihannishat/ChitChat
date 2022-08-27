@@ -1,11 +1,7 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
+﻿namespace ChitChat.Api.Controllers;
 
-namespace ChitChat.Api.Controllers;
-
-[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-[Route("api/[controller]")]
-[ApiController]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme),
+    ApiController, Route("api/[controller]")]
 public class UserController : ControllerBase
 {
     private readonly IUserService _userService;
@@ -21,15 +17,16 @@ public class UserController : ControllerBase
     public async Task<List<User>> GetAll() =>
         await _userService.GetAllUsersAsync();
 
-
     [HttpGet("GetById/{id:length(24)}")]
     public async Task<ActionResult<User>> GetById([FromRoute] string id)
     {
         var user = await _userService.GetUserByIdAsync(id);
+
         if (user is null)
         {
             return NotFound();
         }
+
         return user;
     }
 
@@ -37,10 +34,12 @@ public class UserController : ControllerBase
     public async Task<bool> GetByName([FromRoute] string name)
     {
         var user = await _userService.GetUserByNameAsync(name);
+
         if (user is null)
         {
             return false;
         }
+
         return true;
     }
 
@@ -48,10 +47,12 @@ public class UserController : ControllerBase
     public async Task<bool> GetByEmail([FromRoute] string email)
     {
         var user = await _userService.GetUserByEmailAsync(email);
+
         if (user is null)
         {
             return false;
         }
+
         return true;
     }
 
@@ -59,6 +60,7 @@ public class UserController : ControllerBase
     public async Task<ActionResult<User>> Update(string id, User updateUser)
     {
         var user = await _userService.GetUserByIdAsync(id);
+
         if (user is null)
         {
             return NotFound();
@@ -66,6 +68,7 @@ public class UserController : ControllerBase
 
         updateUser.Id = id;
         await _userService.UpdateUserAsync(updateUser);
+
         return NoContent();
     }
 
@@ -73,12 +76,14 @@ public class UserController : ControllerBase
     public async Task<ActionResult<User>> Delete(string id)
     {
         var user = await _userService.GetUserByIdAsync(id);
+
         if (user is null)
         {
             return NotFound();
         }
+
         await _userService.DeleteUserByIdAsync(id);
+
         return NoContent();
     }
-
 }

@@ -1,17 +1,5 @@
-﻿using ChitChat.Infrastructure.Documents;
-using ChitChat.Infrastructure.RabbitMQ.Models;
-using ChitChat.Infrastructure.SignalR;
-using Microsoft.AspNetCore.SignalR;
-using RabbitMQ.Client;
-using RabbitMQ.Client.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿namespace ChitChat.Infrastructure.RabbitMQ;
 
-namespace ChitChat.Infrastructure.RabbitMQ;
 public class SignalRConsumer : ISignalRConsumer
 {
     private readonly IServiceProvider _serviceProvider;
@@ -19,7 +7,6 @@ public class SignalRConsumer : ISignalRConsumer
     private readonly ConnectionFactory _factory;
     private readonly IConnection _connection;
     private readonly IModel _channel;
-
 
     public SignalRConsumer(IServiceProvider serviceProvider, ExchangerQueueSetting exchangerQueueSetting)
     {
@@ -39,11 +26,11 @@ public class SignalRConsumer : ISignalRConsumer
 
         consumer.Received += async (model, ea) =>
         {
-            var chatHub = (IHubContext<MessageHub>)_serviceProvider.GetService(typeof(IHubContext<MessageHub>));
+            var chatHub = (IHubContext<MessageHub>)_serviceProvider.GetService(typeof(IHubContext<MessageHub>))!;
 
             var body = ea.Body.ToArray();
             var data = Encoding.UTF8.GetString(body);
-            var message = JsonSerializer.Deserialize<Message>(data);
+            var message = JsonSerializer.Deserialize<Message>(data)!;
 
             Console.WriteLine(signalRQueue + "got message --->" + message);
 
@@ -51,6 +38,7 @@ public class SignalRConsumer : ISignalRConsumer
 
             await chatHub.Clients.Group(groupName).SendAsync("NewMessage", message);
         };
+
         _channel.BasicConsume(signalRQueue, true, consumer);
     }
 

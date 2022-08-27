@@ -1,20 +1,17 @@
-﻿using ChitChat.Infrastructure.Documents;
-using ChitChat.Data.Configurations;
-using ChitChat.Data.Repositories;
-using MongoDB.Driver;
-using MongoDB.Driver.Linq;
+﻿namespace ChitChat.Infrastructure.Repositories;
 
-namespace ChitChat.Infrastructure.Repositories;
-
-public class GroupRepository : MongoRepository<Group> , IGroupRepository
+public class GroupRepository : MongoRepository<Group>, IGroupRepository
 {
-    public GroupRepository(IMongoDbSettings settings) : base(settings) { }
+    public GroupRepository(IMongoDbSettings settings) : base(settings)
+    {
+
+    }
+
     public async Task<Group> FindGroupForConnection(string connectionId)
     {
         return await _collection.AsQueryable()
                        .Where(c => c.Connections.Any(x => x.ConnectionId == connectionId))
                        .FirstOrDefaultAsync();
-        
     }
 
     public async Task<Group> FindMessageGroup(string groupName)
@@ -22,5 +19,4 @@ public class GroupRepository : MongoRepository<Group> , IGroupRepository
         return await _collection.AsQueryable()
             .FirstOrDefaultAsync(x => x.Name == groupName);
     }
-
 }

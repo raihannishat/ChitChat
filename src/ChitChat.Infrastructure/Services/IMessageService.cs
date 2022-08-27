@@ -1,7 +1,5 @@
-﻿using ChitChat.Infrastructure.DTOs;
-using ChitChat.Infrastructure.Documents;
+﻿namespace ChitChat.Infrastructure.Services;
 
-namespace ChitChat.Infrastructure.Services;
 public interface IMessageService
 {
 	//void AddGroup(Group group);

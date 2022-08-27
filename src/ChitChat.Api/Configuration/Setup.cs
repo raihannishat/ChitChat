@@ -1,9 +1,5 @@
 ﻿namespace ChitChat.Api.Configuration;
 
-using ChitChat.Infrastructure.Dependencies;
-using ChitChat.Infrastructure.RabbitMQ;
-using ChitChat.Infrastructure.SignalR;
-
 public static class Setup
 {
     public static void ConfgiureServices(this WebApplicationBuilder builder)
@@ -60,10 +56,10 @@ public static class Setup
                     Reference = new Microsoft.OpenApi.Models.OpenApiReference {
                         Type = Microsoft.OpenApi.Models.ReferenceType.SecurityScheme,
                             Id = "Bearer"
-                    }
-                },
-                new string[] {}
-            }
+                        }
+                    },
+                    new string[] { }
+                }
             });
         });
 
@@ -73,7 +69,7 @@ public static class Setup
             hubOptions.MaximumReceiveMessageSize = 102400000;
         });
 
-        builder.Services.CoreResolver();
+        builder.Services.InfrastructureResolver();
         builder.Services.IdentityResolver();
         builder.Services.DataResolver();
         builder.Services.AddEndpointsApiExplorer();
@@ -82,7 +78,6 @@ public static class Setup
 
     public static void Configure(this WebApplication app, IApplicationBuilder appBuilder)
     {
-
         if (app.Environment.IsDevelopment())
         {
             app.UseSwagger();
@@ -120,10 +115,10 @@ public static class Setup
 
     public static void RegisterSignalRWithRabbitMQ(IServiceProvider serviceProvider)
     {
-        var signalRConsumer = (ISignalRConsumer)serviceProvider.GetService(typeof(ISignalRConsumer));
-        signalRConsumer.Connect();
+        var signalRConsumer = (ISignalRConsumer?)serviceProvider.GetService(typeof(ISignalRConsumer));
+        signalRConsumer!.Connect();
 
-        var dbConsumer = (IDBConsumer)serviceProvider.GetService(typeof(IDBConsumer));
-        dbConsumer.Connect();
+        var dbConsumer = (IDBConsumer?)serviceProvider.GetService(typeof(IDBConsumer));
+        dbConsumer!.Connect();
     }
 }

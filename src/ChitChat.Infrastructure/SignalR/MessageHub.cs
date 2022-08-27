@@ -1,14 +1,4 @@
-﻿using AutoMapper;
-using ChitChat.Identity.Services;
-using ChitChat.Infrastructure.DTOs;
-using ChitChat.Infrastructure.Documents;
-using ChitChat.Infrastructure.DTOs;
-using ChitChat.Infrastructure.RabbitMQ;
-using ChitChat.Infrastructure.Services;
-using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Logging;
-
-namespace ChitChat.Infrastructure.SignalR;
+﻿namespace ChitChat.Infrastructure.SignalR;
 
 public class MessageHub : Hub
 {
@@ -17,7 +7,6 @@ public class MessageHub : Hub
 	private readonly IMessageService _messageService;
 	private readonly IUserService _userService;
 	private readonly IRabbitMQPublisher _rabbitMQpublisher;
-
 
 	public MessageHub(IMapper mapper, IMessageService messageService,
 		IUserService userService, ILogger<MessageHub> logger, IRabbitMQPublisher rabbitMQPublisher)
@@ -32,7 +21,7 @@ public class MessageHub : Hub
 	public override async Task OnConnectedAsync()
 	{
 		var httpContext = Context.GetHttpContext();
-		var sender = httpContext.Request.Query["sender"].ToString();
+		var sender = httpContext!.Request.Query["sender"].ToString();
 		var receiver = httpContext.Request.Query["receiver"].ToString();
 		var groupName = GetGroupName(sender, receiver);
 		await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
@@ -45,7 +34,7 @@ public class MessageHub : Hub
 		await Clients.Caller.SendAsync("ReceiveMessageThread", messages);
 	}
 
-	public override async Task OnDisconnectedAsync(Exception exception)
+	public override async Task OnDisconnectedAsync(Exception? exception)
 	{
 		//var group = await RemoveFromMessageGroup();
 
@@ -82,7 +71,6 @@ public class MessageHub : Hub
 		//await _messageService.AddMessage(message);
 
 		//await Clients.Group(groupName).SendAsync("NewMessage",message);
-
 	}
 
 	//private async Task<Group> AddToGroup(string groupName, string sender)

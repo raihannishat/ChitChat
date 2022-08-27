@@ -1,10 +1,6 @@
-﻿using ChitChat.Data.Services;
-using Microsoft.AspNetCore.Mvc;
+﻿namespace ChitChat.Api.Controllers;
 
-
-namespace ChitChat.Api.Controllers;
-[Route("api/[controller]")]
-[ApiController]
+[ApiController, Route("api/[controller]")]
 public class CacheController : ControllerBase
 {
     private readonly ICacheService _cacheService;
@@ -18,18 +14,20 @@ public class CacheController : ControllerBase
     public async Task<IActionResult> Get([FromRoute] string key)
     {
         var value = await _cacheService.GetCachValueAsync(key);
+
         if (value == null)
         {
             return NotFound("Key does'not exist");
         }
+
         return Ok(value);
     }
 
     [HttpGet("activeUsers")]
-    public async Task<IActionResult> GetAllKeys()
+    public IActionResult GetAllKeys()
     {
-        var value = _cacheService.GetAllKeysAsync();
-       
+        var value = _cacheService.GetAllKeys();
+
         return Ok(value);
     }
 
@@ -37,8 +35,7 @@ public class CacheController : ControllerBase
     public async Task<IActionResult> Post([FromBody] CacheEntryRequest request)
     {
         await _cacheService.SetCachValueAsync(request.Key, request.Value);
+
         return Ok();
     }
-
-  
 }

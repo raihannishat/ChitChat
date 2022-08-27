@@ -1,17 +1,9 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
-using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace ChitChat.Identity.Utilities;
 
-namespace ChitChat.Identity.Utilities;
 public class TokenHelper : ITokenHelper
 {
     private readonly string _secret;
+
     public TokenHelper(IConfiguration configuration)
     {
         _secret = configuration.GetSection("JwtSettings:Secret").Value;
@@ -27,19 +19,23 @@ public class TokenHelper : ITokenHelper
             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_secret)),
             ValidateLifetime = false,
         };
+
         var tokenHandler = new JwtSecurityTokenHandler();
+
         try
         {
             var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out var validateToken);
+
             if (!IsJwtWithValidSecurityAlgorithm(validateToken))
             {
-                return null;
+                return null!;
             }
+
             return principal;
         }
         catch
         {
-            return null;
+            return null!;
         }
     }
 
@@ -54,6 +50,7 @@ public class TokenHelper : ITokenHelper
     {
         var random = new Random();
         var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+
         return new string(Enumerable.Repeat(chars, length)
             .Select(x => x[random.Next(x.Length)]).ToArray());
     }

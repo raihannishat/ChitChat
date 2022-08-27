@@ -4,6 +4,6 @@ public class IdenityProfile : Profile
 {
     public IdenityProfile()
     {
-        CreateMap<User, UserSignUp>().ReverseMap();
+        CreateMap<User, UserSignUpDTO>().ReverseMap();
     }
 }

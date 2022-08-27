@@ -1,10 +1,4 @@
-﻿using AutoMapper;
-using ChitChat.Infrastructure.DTOs;
-using ChitChat.Infrastructure.Documents;
-using ChitChat.Infrastructure.Repositories;
-using Microsoft.Extensions.Logging;
-
-namespace ChitChat.Infrastructure.Services;
+﻿namespace ChitChat.Infrastructure.Services;
 
 public class MessageService : IMessageService
 {
@@ -40,6 +34,7 @@ public class MessageService : IMessageService
     {
         return await _messageRespository.GetMessageThread(currentUsername, recipientUsername);
     }
+
     //public async void AddGroup(Group group)
     //{
     //    await _groupRepository.InsertOneAsync(group);
@@ -83,8 +78,4 @@ public class MessageService : IMessageService
     //{
     //    await _connectionRepository.DeleteByIdAsync(connection.Id);
     //}
-
-
-
-
 }
