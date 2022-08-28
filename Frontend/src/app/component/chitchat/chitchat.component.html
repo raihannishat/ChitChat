@@ -37,14 +37,14 @@
       >
         <div class="col-inside-lg decor-default">
           <div class="chat-body">
-            <h6>Mini Chat</h6>
+            <h6>Alexander</h6>
             <div class="answer left">
               <div class="avatar">
                 <img
                   src="https://bootdey.com/img/Content/avatar/avatar1.png"
                   alt="User name"
                 />
-                <div class="status offline"></div>
+                <div class="status online"></div>
               </div>
               <div class="name">Alexander Herthic</div>
               <div class="text">
@@ -65,12 +65,10 @@
               <div class="name">Alexander Herthic</div>
               <div class="text">
                 Lorem ipsum dolor amet, consectetur adipisicing elit Lorem ipsum
-                dolor amet, consectetur adipisicing elit Lorem ipsum dolor amet,
-                consectetur adiping elit
               </div>
               <div class="time">5 min ago</div>
             </div>
-            <div class="answer left">
+            <!-- <div class="answer left">
               <div class="avatar">
                 <img
                   src="https://bootdey.com/img/Content/avatar/avatar1.png"
@@ -185,11 +183,38 @@
                 Mate!
               </div>
               <div class="time">5 min ago</div>
-            </div>
-            <div class="answer-add">
+            </div> -->
+
+            <!-- message send box -->
+
+            <!-- <div class="answer-add">
               <input placeholder="Write a message" />
               <span class="answer-btn answer-btn-1"></span>
               <span class="answer-btn answer-btn-2"></span>
+            </div> -->
+            <div class="card-footer">
+              <form #messageForm="ngForm" autocomplete="off">
+                <div class="input-group">
+                  <input
+                    style="border-radius: 5px"
+                    name="messageContent"
+                    required
+                    type="text"
+                    class="form-control input-sm"
+                    placeholder="Send a private message"
+                  />
+                  <div class="input-group-append">
+                    <button
+                      style="margin-left: 10px"
+                      [disabled]="!messageForm.valid"
+                      class="btn btn-primary"
+                      type="submit"
+                    >
+                      <i class="fa fa-paper-plane" aria-hidden="true"></i>
+                    </button>
+                  </div>
+                </div>
+              </form>
             </div>
           </div>
         </div>

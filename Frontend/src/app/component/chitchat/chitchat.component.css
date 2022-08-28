@@ -185,9 +185,10 @@ body {
 .chat-body .answer-add {
   clear: both;
   position: relative;
-  margin: 20px -20px -20px;
+  margin: 10px -20px -20px;
   padding: 20px;
-  background: #46be8a;
+  background: #aed3c3;
+  border-radius: 7px;
 }
 .chat-body .answer-add input {
   border: none;
