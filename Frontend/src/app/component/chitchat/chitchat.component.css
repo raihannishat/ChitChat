@@ -167,13 +167,13 @@ body {
   left: 4px;
 }
 .chat-body .answer.right .text {
-  background: #7266ba;
+  background: #4886f1;
   color: #ffffff;
   border-radius: 8px 8px 0 8px;
 }
 .chat-body .answer.right .text:before {
   right: -30px;
-  border-left-color: #7266ba;
+  border-left-color: #4886f1;
   border-left-width: 12px;
 }
 .chat-body .answer.right .time {
