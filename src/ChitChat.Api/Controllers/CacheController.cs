@@ -1,4 +1,5 @@
-﻿namespace ChitChat.Api.Controllers;
+﻿
+namespace ChitChat.Api.Controllers;
 
 [ApiController, Route("api/[controller]")]
 public class CacheController : ControllerBase
@@ -32,7 +33,7 @@ public class CacheController : ControllerBase
     }
 
     [HttpPost("activeNotifying")]
-    public async Task<IActionResult> Post([FromBody] CacheEntryRequest request)
+    public async Task<IActionResult> Post([FromBody] CacheEntryDTO request)
     {
         await _cacheService.SetCachValueAsync(request.Key, request.Value);
 

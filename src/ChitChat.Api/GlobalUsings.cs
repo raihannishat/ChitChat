@@ -9,6 +9,7 @@ global using ChitChat.Identity.DTOs;
 global using ChitChat.Identity.Request;
 global using ChitChat.Identity.Response;
 global using ChitChat.Identity.Services;
+global using ChitChat.Data.DTOs;
 global using ChitChat.Infrastructure.Dependencies;
 global using ChitChat.Infrastructure.RabbitMQ;
 global using ChitChat.Infrastructure.SignalR;
