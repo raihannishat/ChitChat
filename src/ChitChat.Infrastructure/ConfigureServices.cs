@@ -1,8 +1,8 @@
-﻿namespace ChitChat.Infrastructure.Dependencies;
+﻿namespace ChitChat.Infrastructure;
 
-public static class DependencyResolver
+public static class ConfigureServices
 {
-	public static void InfrastructureResolver(this IServiceCollection services)
+	public static IServiceCollection AddInfractructureServices(this IServiceCollection services)
 	{
 		services.AddScoped<IConnectionRepository, ConnectionRepository>();
 		services.AddScoped<IGroupRepository, GroupRepository>();
@@ -12,5 +12,13 @@ public static class DependencyResolver
 		services.AddSingleton<IDBConsumer, DBConsumer>();
 		services.AddScoped<IRabbitMQPublisher, RabbitMQPublisher>();
 		services.AddSingleton<ExchangerQueueSetting>();
+
+		services.AddSignalR(hubOptions =>
+		{
+			hubOptions.EnableDetailedErrors = true;
+			hubOptions.MaximumReceiveMessageSize = 102400000;
+		});
+
+		return services;
 	}
 }

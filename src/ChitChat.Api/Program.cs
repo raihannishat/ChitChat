@@ -1,10 +1,20 @@
 var builder = WebApplication.CreateBuilder(args);
 
-builder.ConfigureLogger();
-builder.ConfgiureServices();
+builder.Host.UseSerilog((ctx, lc) => lc
+           .MinimumLevel.Debug()
+           .MinimumLevel.Override("Microsoft", LogEventLevel.Warning)
+           .Enrich.FromLogContext()
+           .ReadFrom.Configuration(builder.Configuration));
+
+
+builder.Services.AddInfractructureServices();
+builder.Services.AddIdentityServices(builder.Configuration);
+builder.Services.AddDatabaseServices(builder.Configuration);
+builder.Services.AddWebApiServices();
 
 var app = builder.Build();
-app.Configure(app);
+
+app.UseAllMiddlewares(app);
 
 try
 {
