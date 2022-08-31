@@ -14,7 +14,13 @@
               </div>
               <div class="col-md-7 col-sm-7">
                 <h5>
-                  <a routerLink="/message/{{user}}" [queryParams]='{membername: user}' class="profile-link">{{ user }}</a>
+                  <a
+                    routerLink="/message/{{ user }}"
+                    [queryParams]="{ membername: user }"
+                    class="profile-link"
+                    style="text-decoration: none"
+                    >{{ user }}</a
+                  >
                 </h5>
                 <p>Status: Active</p>
               </div>

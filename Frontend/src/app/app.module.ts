@@ -38,6 +38,8 @@ import { ChatComponent } from './component/chat/chat.component';
 import { HeaderComponent } from './component/header/header.component';
 import { MemberMessageComponent } from './component/member-message/member-message.component';
 import { ChitchatComponent } from './component/chitchat/chitchat.component';
+import { ChatboxComponent } from './component/chatbox/chatbox.component';
+import { ChatpageComponent } from './component/chatpage/chatpage.component';
 
 @NgModule({
   declarations: [
@@ -52,6 +54,8 @@ import { ChitchatComponent } from './component/chitchat/chitchat.component';
     HeaderComponent,
     MemberMessageComponent,
     ChitchatComponent,
+    ChatboxComponent,
+    ChatpageComponent,
   ],
   imports: [
     BrowserModule,

@@ -1,6 +1,8 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ChatComponent } from './component/chat/chat.component';
+import { ChatboxComponent } from './component/chatbox/chatbox.component';
+import { ChatpageComponent } from './component/chatpage/chatpage.component';
 import { ChitchatComponent } from './component/chitchat/chitchat.component';
 import { LoginComponent } from './component/login/login.component';
 import { MemberMessageComponent } from './component/member-message/member-message.component';
@@ -36,6 +38,14 @@ const routes: Routes = [
   {
     path: 'onlineUsers',
     component: ChitchatComponent,
+  },
+  {
+    path: 'chatbox',
+    component: ChatboxComponent,
+  },
+  {
+    path: 'chatpage',
+    component: ChatpageComponent,
   },
 ];
 
