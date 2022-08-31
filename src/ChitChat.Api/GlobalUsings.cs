@@ -22,4 +22,3 @@ global using Serilog.Events;
 global using StackExchange.Redis;
 global using System.Text;
 global using ChitChat.Api;
-global using ChitChat.Api.Extensions;

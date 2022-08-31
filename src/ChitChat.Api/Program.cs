@@ -14,7 +14,27 @@ builder.Services.AddWebApiServices();
 
 var app = builder.Build();
 
-app.UseAllMiddlewares(app);
+if (app.Environment.IsDevelopment())
+{
+    app.UseSwagger();
+    app.UseSwaggerUI();
+}
+
+app.UseCors(x => x
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .AllowCredentials()
+    .WithOrigins("http://localhost:4200"));
+
+app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapControllers();
+app.MapHub<MessageHub>("hubs/message");
+
+app.Lifetime.ApplicationStarted.Register(() =>
+    ChitChat.Api.ConfigureServices.RegisterSignalRWithRabbitMQ(
+    ((IApplicationBuilder)(app)).ApplicationServices));
 
 try
 {
