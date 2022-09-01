@@ -14,24 +14,26 @@
         >
           <div class="chat-users">
             <h6>Online</h6>
-            <div class="user">
-              <div class="avatar">
-                <img
-                  src="https://bootdey.com/img/Content/avatar/avatar1.png"
-                  alt="User name"
-                />
-                <div class="status off"></div>
-              </div>
-              <div>
-                <div class="name">
-                  <button
-                    style="border: none; border-radius: 5px"
-                    (click)="onClick()"
-                  >
-                    {{ user }}
-                  </button>
+            <div *ngFor="let user of users">
+              <div class="user">
+                <div class="avatar">
+                  <img
+                    src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                    alt="User name"
+                  />
+                  <div class="status off"></div>
                 </div>
-                <!-- <div class="mood">online</div> -->
+                <div>
+                  <div class="name">
+                    <button
+                      style="border: none; border-radius: 5px"
+                      (click)="onClick(user)"
+                    >
+                      {{ user.name }}
+                    </button>
+                  </div>
+                  <!-- <div class="mood">online</div> -->
+                </div>
               </div>
             </div>
           </div>
@@ -43,7 +45,7 @@
         tabindex="5001"
       >
         <div *ngIf="userClicked">
-          <app-chatbox [member]="user"></app-chatbox>
+          <app-chatbox [member]="user" [messages]="messages"></app-chatbox>
         </div>
       </div>
     </div>

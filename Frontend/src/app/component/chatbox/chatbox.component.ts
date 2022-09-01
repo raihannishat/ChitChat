@@ -1,4 +1,11 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  Input,
+  OnChanges,
+  OnInit,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { Message } from 'src/app/models/message.model';
@@ -24,6 +31,7 @@ export class ChatboxComponent implements OnInit {
   ngOnInit(): void {
     this.username = localStorage.getItem('username')?.toString();
     this.messageService.createHubConnection(this.username, this.member);
+    this.loadMessages();
   }
 
   loadMessages() {

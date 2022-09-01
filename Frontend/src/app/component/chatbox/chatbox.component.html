@@ -12,7 +12,7 @@
       <!-- ------------------------ -->
       <ul
         #scrollMe
-        style="overflow: scroll; height: 500px"
+        style="overflow: scroll; height: 290px"
         [scrollTop]="scrollMe.scrollHeight"
         *ngIf="(messageService.messageThread$ | async)?.length != 0"
         class="chat"
