@@ -1,31 +1,52 @@
+<link
+  href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"
+  rel="stylesheet"
+/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.nicescroll/3.6.8-fix/jquery.nicescroll.min.js"></script>
 <div class="container">
-  <div class="row">
-    <div *ngFor="let user of activeUsers">
-      <div class="col-md-8">
-        <div class="people-nearby">
-          <div class="nearby-user">
-            <div class="row">
-              <div class="col-md-2 col-sm-2">
-                <img
-                  src="https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?t=st=1657283586~exp=1657284186~hmac=19517133bda3612f80dac946a8d94c3a3daa9210e9ecab982fa6522b404766e9&w=740"
-                  alt="user"
-                  class="profile-photo-lg"
-                />
-              </div>
-              <div class="col-md-7 col-sm-7">
-                <h5>
-                  <a
-                    routerLink="/message/{{ user }}"
-                    [queryParams]="{ membername: user }"
-                    class="profile-link"
-                    style="text-decoration: none"
-                    >{{ user }}</a
-                  >
-                </h5>
-                <p>Status: Active</p>
+  <div class="content container-fluid bootstrap snippets bootdey">
+    <div class="row row-broken">
+      <div class="col-sm-3 col-xs-12">
+        <div
+          class="col-inside-lg decor-default chat"
+          style="overflow: hidden; outline: none"
+          tabindex="5000"
+        >
+          <div class="chat-users">
+            <h6>Online</h6>
+            <hr />
+            <div *ngFor="let user of activeUsers">
+              <div *ngIf="user != sender" class="user">
+                <div class="avatar">
+                  <img
+                    src="https://bootdey.com/img/Content/avatar/avatar1.png"
+                    alt="User name"
+                  />
+                  <div class="status off"></div>
+                </div>
+                <div>
+                  <div class="name">
+                    <button
+                      style="border: none; border-radius: 5px"
+                      (click)="onClick(user)"
+                    >
+                      {{ user }}
+                    </button>
+                  </div>
+                  <!-- <div class="mood">online</div> -->
+                </div>
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      <div
+        class="col-sm-9 col-xs-12 chat"
+        style="overflow: hidden; outline: none"
+        tabindex="5001"
+      >
+        <div *ngIf="userClicked">
+          <app-chatbox [member]="member" [messages]="messages"></app-chatbox>
         </div>
       </div>
     </div>

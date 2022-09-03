@@ -11,7 +11,7 @@ export class ActiveUsersService {
 
   baseUrl = 'https://localhost:7113/api/Cache/';
 
-  activeUsersList(): Observable<any> {
+  getActiveUsersList(): Observable<any> {
     return this.http.get<ActiveUser>(this.baseUrl + 'activeUsers');
   }
 }

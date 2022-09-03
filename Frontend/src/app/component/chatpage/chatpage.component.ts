@@ -11,6 +11,7 @@ import { UsersService } from 'src/app/services/users.service';
 })
 export class ChatpageComponent implements OnInit {
   users: User[] = [];
+  sender: string = localStorage.getItem('username')?.toString()!;
   messages: Message[] = [];
   user: string = 'nishat';
   userClicked: boolean = false;
@@ -31,7 +32,8 @@ export class ChatpageComponent implements OnInit {
     console.log(user);
 
     this.user = user.name;
-    this.loadMessages();
+    this.messageService.stopHubConnection();
+    this.messageService.createHubConnection(this.sender, this.user);
   }
   loadMessages() {
     this.messageService.getMessageThread(this.user).subscribe((messages) => {

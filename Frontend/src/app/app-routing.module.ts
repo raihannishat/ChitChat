@@ -3,9 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ChatComponent } from './component/chat/chat.component';
 import { ChatboxComponent } from './component/chatbox/chatbox.component';
 import { ChatpageComponent } from './component/chatpage/chatpage.component';
-import { ChitchatComponent } from './component/chitchat/chitchat.component';
 import { LoginComponent } from './component/login/login.component';
-import { MemberMessageComponent } from './component/member-message/member-message.component';
 import { RegistrationComponent } from './component/registration/registration.component';
 import { UserListComponent } from './component/user-list/user-list.component';
 import { UserProfileComponent } from './component/user-profile/user-profile.component';
@@ -30,22 +28,16 @@ const routes: Routes = [
   },
   { path: 'chat', component: ChatComponent, canActivate: [AuthGuard] },
   //{path:"messages",component:MemberMessageComponent},
-  {
-    path: 'message/:username',
-    component: MemberMessageComponent,
-    canActivate: [AuthGuard],
-  },
-  {
-    path: 'onlineUsers',
-    component: ChitchatComponent,
-  },
+
   {
     path: 'chatbox',
     component: ChatboxComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'chatpage',
     component: ChatpageComponent,
+    canActivate: [AuthGuard],
   },
 ];
 

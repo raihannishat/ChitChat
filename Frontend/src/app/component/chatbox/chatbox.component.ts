@@ -30,8 +30,8 @@ export class ChatboxComponent implements OnInit {
 
   ngOnInit(): void {
     this.username = localStorage.getItem('username')?.toString();
-    this.messageService.createHubConnection(this.username, this.member);
-    this.loadMessages();
+    //this.messageService.createHubConnection(this.username, this.member);
+    // this.loadMessages();
   }
 
   loadMessages() {
@@ -51,6 +51,7 @@ export class ChatboxComponent implements OnInit {
   }
 
   ngOnDestroy(): void {
+    console.log('Desytroy called');
     this.messageService.stopHubConnection();
   }
 }

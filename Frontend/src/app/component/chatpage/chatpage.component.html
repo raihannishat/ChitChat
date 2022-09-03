@@ -13,9 +13,10 @@
           tabindex="5000"
         >
           <div class="chat-users">
-            <h6>Online</h6>
+            <h6>Messages</h6>
+            <hr />
             <div *ngFor="let user of users">
-              <div class="user">
+              <div *ngIf="user.name != sender" class="user">
                 <div class="avatar">
                   <img
                     src="https://bootdey.com/img/Content/avatar/avatar1.png"
