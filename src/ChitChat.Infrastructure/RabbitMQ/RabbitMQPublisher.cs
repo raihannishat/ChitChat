@@ -4,11 +4,12 @@ public class RabbitMQPublisher : IRabbitMQPublisher
 {
     private readonly ConnectionFactory _factory;
     private readonly ExchangerQueueSetting _exchangerQueueSetting;
+    private static readonly string _url = "amqps://shmhruyd:Vc6vZ4jqCuzvo_XqFUwvhT0xQDLxKHsm@armadillo.rmq.cloudamqp.com/shmhruyd";
 
     public RabbitMQPublisher(ExchangerQueueSetting exchangerQueueSetting)
     {
         _exchangerQueueSetting = exchangerQueueSetting;
-        _factory = new ConnectionFactory() { HostName = "localhost" };
+        _factory = new ConnectionFactory() { Uri = new Uri(_url) };
     }
 
     public Task SendMessageToQueue(Message message)

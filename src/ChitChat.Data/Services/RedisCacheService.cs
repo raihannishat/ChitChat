@@ -3,7 +3,7 @@
 public class RedisCacheService : ICacheService
 {
     private readonly IConnectionMultiplexer _connectionMultiplexer;
-
+    private readonly string _publicEndpoint = "redis-15117.c13.us-east-1-3.ec2.cloud.redislabs.com:15117";
     public RedisCacheService(IConnectionMultiplexer connectionMultiplexer)
     {
         _connectionMultiplexer = connectionMultiplexer;
@@ -14,7 +14,7 @@ public class RedisCacheService : ICacheService
         var pattern = "DIU_Raizor";
 
         var keys = _connectionMultiplexer
-            .GetServer("localhost", 6379)
+            .GetServer(_publicEndpoint)
             .Keys(0, pattern + "*")
             .ToList();
 

@@ -15,8 +15,14 @@ public static class ConfigureServices
 
         services.AddSingleton<IMongoDbSettings>(configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>());
 
+        var publicEndpoint = configuration.GetValue<string>("RedisConnection");
         services.AddSingleton<IConnectionMultiplexer>(x =>
-            ConnectionMultiplexer.Connect(configuration.GetValue<string>("RedisConnection")));
+            ConnectionMultiplexer.Connect(new ConfigurationOptions
+            {
+                EndPoints = {publicEndpoint},
+                User = "default",
+                Password = "tlM4SK8tDRUctWyL78fmjSKBQyFCpUED"
+            }));
 
         services.AddSingleton<ICacheService, RedisCacheService>();
 

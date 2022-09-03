@@ -7,12 +7,14 @@ public class SignalRConsumer : ISignalRConsumer
     private readonly ConnectionFactory _factory;
     private readonly IConnection _connection;
     private readonly IModel _channel;
+    private static readonly string _url = "amqps://shmhruyd:Vc6vZ4jqCuzvo_XqFUwvhT0xQDLxKHsm@armadillo.rmq.cloudamqp.com/shmhruyd";
+
 
     public SignalRConsumer(IServiceProvider serviceProvider, ExchangerQueueSetting exchangerQueueSetting)
     {
         _serviceProvider = serviceProvider;
         _exchangerQueueSetting = exchangerQueueSetting;
-        _factory = new ConnectionFactory() { HostName = "localhost" };
+        _factory = new ConnectionFactory() { Uri = new Uri(_url) };
         _connection = _factory.CreateConnection();
         _channel = _connection.CreateModel();
     }

@@ -10,6 +10,8 @@ public class DBConsumer : IDBConsumer
     private readonly ConnectionFactory _factory;
     private readonly IConnection _connection;
     private readonly IModel _channel;
+    private static readonly string _url = "amqps://shmhruyd:Vc6vZ4jqCuzvo_XqFUwvhT0xQDLxKHsm@armadillo.rmq.cloudamqp.com/shmhruyd";
+
 
 
     public DBConsumer(IServiceProvider serviceProvider, ExchangerQueueSetting exchangerQueueSetting,
@@ -20,7 +22,7 @@ public class DBConsumer : IDBConsumer
         _mapper = mapper;
         _logger = logger;
         _exchangerQueueSetting = exchangerQueueSetting;
-        _factory = new ConnectionFactory() { HostName = "localhost" };
+        _factory = new ConnectionFactory() { Uri = new Uri(_url) };
         _connection = _factory.CreateConnection();
         _channel = _connection.CreateModel();
     }
