@@ -61,7 +61,7 @@ public class AuthController : ControllerBase
     [HttpPost, Route("refreshToken")]
     public async Task<IActionResult> Refresh([FromBody] RefreshTokenRequest request)
     {
-        var authResponse = await _authService.RefreshTokenAsync(request.Token, request.RefreshToken);
+        var authResponse = await _authService.GetRefreshTokenAsync(request.Token, request.RefreshToken);
 
         if (!authResponse.Success)
         {

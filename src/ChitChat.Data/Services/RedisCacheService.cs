@@ -2,25 +2,31 @@
 
 public class RedisCacheService : ICacheService
 {
-    private readonly IConnectionMultiplexer _connectionMultiplexer;
-    private readonly string _publicEndpoint = "redis-15117.c13.us-east-1-3.ec2.cloud.redislabs.com:15117";
-    public RedisCacheService(IConnectionMultiplexer connectionMultiplexer)
+    public readonly ConnectionMultiplexer connectionMultiplexer;
+    private readonly IRedisSettings _redisSettings;
+    private const string _pattern = "DIU_Raizor";
+    public RedisCacheService(IRedisSettings redisSettings)
     {
-        _connectionMultiplexer = connectionMultiplexer;
+        _redisSettings = redisSettings;
+        connectionMultiplexer = ConnectionMultiplexer.Connect(new ConfigurationOptions
+        {
+            EndPoints = { _redisSettings.Endpoint },
+            User = _redisSettings.User,
+            Password = _redisSettings.Password
+        });
     }
 
     public List<string> GetAllKeys()
     {
-        var pattern = "DIU_Raizor";
 
-        var keys = _connectionMultiplexer
-            .GetServer(_publicEndpoint)
-            .Keys(0, pattern + "*")
+        var keys = connectionMultiplexer
+            .GetServer(_redisSettings.Endpoint)
+            .Keys(0, pattern: $"{_pattern}*")
             .ToList();
 
         var strings = string.Join("", keys);
 
-        var list = strings.Split("DIU_Raizor:").ToList();
+        var list = strings.Split($"{_pattern}:").ToList();
 
         list.RemoveAt(0);
 
@@ -29,14 +35,14 @@ public class RedisCacheService : ICacheService
 
     public async Task<string> GetCachValueAsync(string key)
     {
-        var db = _connectionMultiplexer.GetDatabase();
+        var db = connectionMultiplexer.GetDatabase();
         return await db.StringGetAsync(key);
     }
 
     public async Task SetCachValueAsync(string key, string value)
     {
-        var db = _connectionMultiplexer.GetDatabase();
-        var prefix = "DIU_Raizor:";
+        var db = connectionMultiplexer.GetDatabase();
+        var prefix = $"{_pattern}:";
         await db.StringSetAsync(prefix + key, value);
         await db.KeyExpireAsync(prefix + key, DateTime.UtcNow.AddSeconds(60));
     }

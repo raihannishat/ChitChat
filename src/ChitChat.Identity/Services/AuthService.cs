@@ -9,12 +9,12 @@ public class AuthService : IAuthService
     private readonly IMapper _mapper;
 
     public AuthService(IConfiguration configuration, IAuthRepository authRepository, IUserRepository userRepository,
-        IMapper mapper, ITokenHelper tokenHelper)
+        IMapper mapper, ITokenHelper tokenHelper, IJwtSettings jwtSettings)
     {
         _authRepository = authRepository;
         _userRepository = userRepository;
         _mapper = mapper;
-        _key = configuration.GetSection("JwtSettings:Secret").Value;
+        _key = jwtSettings.Secret;
         _tokenHelper = tokenHelper;
     }
 
@@ -92,7 +92,7 @@ public class AuthService : IAuthService
         await _authRepository.InsertOneAsync(token);
     }
 
-    public async Task<AuthenticationResult> RefreshTokenAsync(string token, string refreshToken)
+    public async Task<AuthenticationResult> GetRefreshTokenAsync(string token, string refreshToken)
     {
         var validatedToken = _tokenHelper.GetPrincipalFromToken(token);
 

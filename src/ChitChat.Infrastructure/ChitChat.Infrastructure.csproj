@@ -16,4 +16,8 @@
     <ProjectReference Include="..\ChitChat.Identity\ChitChat.Identity.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Configuration\" />
+  </ItemGroup>
+
 </Project>

@@ -11,18 +11,9 @@ public static class ConfigureServices
 {
     public static IServiceCollection AddDatabaseServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.Configure<MongoDbSettings>(options => configuration.GetSection(nameof(MongoDbSettings)));
-
         services.AddSingleton<IMongoDbSettings>(configuration.GetSection(nameof(MongoDbSettings)).Get<MongoDbSettings>());
 
-        var publicEndpoint = configuration.GetValue<string>("RedisConnection");
-        services.AddSingleton<IConnectionMultiplexer>(x =>
-            ConnectionMultiplexer.Connect(new ConfigurationOptions
-            {
-                EndPoints = {publicEndpoint},
-                User = "default",
-                Password = "tlM4SK8tDRUctWyL78fmjSKBQyFCpUED"
-            }));
+        services.AddSingleton<IRedisSettings>(configuration.GetSection(nameof(RedisSettings)).Get<RedisSettings>());
 
         services.AddSingleton<ICacheService, RedisCacheService>();
 

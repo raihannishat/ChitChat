@@ -2,5 +2,5 @@
 
 public interface IJwtSettings
 {
-    string? Secret { get; set; }
+    string Secret { get; set; }
 }

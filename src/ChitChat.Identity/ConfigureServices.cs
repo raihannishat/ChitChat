@@ -33,10 +33,8 @@ public static class ConfigureServices
 
         services.AddSingleton(tokenValidationParameters);
 
-        services.Configure<JwtSettings>(configuration.GetSection(nameof(JwtSettings)));
-
-        services.AddSingleton<IJwtSettings>(serviceProvider =>
-                serviceProvider.GetRequiredService<IOptions<JwtSettings>>().Value);
+        services.AddSingleton<IJwtSettings>(
+            configuration.GetSection(nameof(JwtSettings)).Get<JwtSettings>());
 
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserService, UserService>();
