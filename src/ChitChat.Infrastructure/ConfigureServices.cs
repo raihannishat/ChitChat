@@ -1,8 +1,12 @@
-﻿namespace ChitChat.Infrastructure;
+﻿using ChitChat.Infrastructure.Configuration;
+using Microsoft.Extensions.Configuration;
+
+namespace ChitChat.Infrastructure;
 
 public static class ConfigureServices
 {
-	public static IServiceCollection AddInfractructureServices(this IServiceCollection services)
+	public static IServiceCollection AddInfractructureServices(this IServiceCollection services,
+		IConfiguration configuration)
 	{
 		services.AddScoped<IConnectionRepository, ConnectionRepository>();
 		services.AddScoped<IGroupRepository, GroupRepository>();
@@ -18,6 +22,9 @@ public static class ConfigureServices
 			hubOptions.EnableDetailedErrors = true;
 			hubOptions.MaximumReceiveMessageSize = 102400000;
 		});
+
+		services.AddSingleton<IRabbitMQSettings>(configuration.GetSection(nameof(RabbitMQSettings)).Get<RabbitMQSettings>());
+
 
 		return services;
 	}

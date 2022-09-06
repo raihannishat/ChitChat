@@ -7,7 +7,7 @@ builder.Host.UseSerilog((ctx, lc) => lc
            .ReadFrom.Configuration(builder.Configuration));
 
 
-builder.Services.AddInfractructureServices();
+builder.Services.AddInfractructureServices(builder.Configuration);
 builder.Services.AddIdentityServices(builder.Configuration);
 builder.Services.AddDatabaseServices(builder.Configuration);
 builder.Services.AddWebApiServices();

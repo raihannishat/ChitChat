@@ -1,4 +1,6 @@
-﻿namespace ChitChat.Infrastructure.RabbitMQ;
+﻿using ChitChat.Infrastructure.Configuration;
+
+namespace ChitChat.Infrastructure.RabbitMQ;
 
 public class DBConsumer : IDBConsumer
 {
@@ -10,19 +12,16 @@ public class DBConsumer : IDBConsumer
     private readonly ConnectionFactory _factory;
     private readonly IConnection _connection;
     private readonly IModel _channel;
-    private static readonly string _url = "amqps://shmhruyd:Vc6vZ4jqCuzvo_XqFUwvhT0xQDLxKHsm@armadillo.rmq.cloudamqp.com/shmhruyd";
-
-
 
     public DBConsumer(IServiceProvider serviceProvider, ExchangerQueueSetting exchangerQueueSetting,
-        IMessageService messageService, IMapper mapper, ILogger<DBConsumer> logger)
+        IMessageService messageService, IMapper mapper, ILogger<DBConsumer> logger, IRabbitMQSettings rabbitMQSettings)
     {
         _serviceProvider = serviceProvider;
         _messageService = messageService;
         _mapper = mapper;
         _logger = logger;
         _exchangerQueueSetting = exchangerQueueSetting;
-        _factory = new ConnectionFactory() { Uri = new Uri(_url) };
+        _factory = new ConnectionFactory() { Uri = new Uri(rabbitMQSettings.URI) };
         _connection = _factory.CreateConnection();
         _channel = _connection.CreateModel();
     }

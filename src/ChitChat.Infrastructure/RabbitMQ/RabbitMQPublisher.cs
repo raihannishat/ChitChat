@@ -1,15 +1,16 @@
-﻿namespace ChitChat.Infrastructure.RabbitMQ;
+﻿using ChitChat.Infrastructure.Configuration;
+
+namespace ChitChat.Infrastructure.RabbitMQ;
 
 public class RabbitMQPublisher : IRabbitMQPublisher
 {
     private readonly ConnectionFactory _factory;
     private readonly ExchangerQueueSetting _exchangerQueueSetting;
-    private static readonly string _url = "amqps://shmhruyd:Vc6vZ4jqCuzvo_XqFUwvhT0xQDLxKHsm@armadillo.rmq.cloudamqp.com/shmhruyd";
 
-    public RabbitMQPublisher(ExchangerQueueSetting exchangerQueueSetting)
+    public RabbitMQPublisher(ExchangerQueueSetting exchangerQueueSetting, IRabbitMQSettings rabbitMQSettings)
     {
         _exchangerQueueSetting = exchangerQueueSetting;
-        _factory = new ConnectionFactory() { Uri = new Uri(_url) };
+        _factory = new ConnectionFactory() { Uri = new Uri(rabbitMQSettings.URI) };
     }
 
     public Task SendMessageToQueue(Message message)
