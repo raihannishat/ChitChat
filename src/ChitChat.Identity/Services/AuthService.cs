@@ -3,16 +3,16 @@
 public class AuthService : IAuthService
 {
     private readonly string _key;
-    private readonly IUserRepository _userRepository;
+    private readonly IUserService _userService;
     private readonly IAuthRepository _authRepository;
     private readonly ITokenHelper _tokenHelper;
     private readonly IMapper _mapper;
 
-    public AuthService(IConfiguration configuration, IAuthRepository authRepository, IUserRepository userRepository,
+    public AuthService(IAuthRepository authRepository, IUserService userService,
         IMapper mapper, ITokenHelper tokenHelper, IJwtSettings jwtSettings)
     {
         _authRepository = authRepository;
-        _userRepository = userRepository;
+        _userService = userService;
         _mapper = mapper;
         _key = jwtSettings.Secret;
         _tokenHelper = tokenHelper;
@@ -22,13 +22,16 @@ public class AuthService : IAuthService
     {
         user.Password = SHA_256.ComputeHash(user.Password);
 
-        await _userRepository.InsertOneAsync(_mapper.Map<User>(user));
+        await _userService.CreateUserAysnc(_mapper.Map<User>(user));
     }
 
     public async Task<AuthenticationResult> SignInAsync(UserSignInDTO user)
     {
-        var password = SHA_256.ComputeHash(user.Password);
-        var existingUser = await _userRepository.FindOneAsync(x => x.Name == user.Name && x.Password == password);
+        var hashedPassword = SHA_256.ComputeHash(user.Password);
+
+        user.Password = hashedPassword;
+
+        var existingUser = await _userService.GetUserAsync(user);
 
         if (existingUser == null)
         {
@@ -153,7 +156,7 @@ public class AuthService : IAuthService
         //finding user id
         var id = validatedToken.Claims.Single(x => x.Type == "Id").Value;
 
-        var user = await _userRepository.FindByIdAsync(id);
+        var user = await _userService.GetUserByIdAsync(id);
 
         return await GenerateTokenAsync(user);
     }
