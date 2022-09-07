@@ -20,7 +20,9 @@ public class AuthService : IAuthService
 
     public async Task SignUpAsync(UserSignUpDTO user)
     {
-        user.Password = SHA_256.ComputeHash(user.Password);
+        var hashedPassword = SHA_256.ComputeHash(user.Password);
+
+        user.Password = hashedPassword;
 
         await _userService.CreateUserAysnc(_mapper.Map<User>(user));
     }

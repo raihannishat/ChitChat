@@ -27,7 +27,6 @@ public class UserService : IUserService
     public async Task<User> GetUserAsync(UserSignInDTO user)
     {
         return await _userRepository.FindOneAsync(x => x.Name == user.Name && x.Password == user.Password);
-
     }
 
     public async Task<User> GetUserByEmailAsync(string email)
@@ -39,7 +38,6 @@ public class UserService : IUserService
     {
         return await _userRepository.FindOneAsync(user => user.Id == id);
     }
-
 
     public async Task<User> GetUserByNameAsync(string name)
     {
