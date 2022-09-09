@@ -16,7 +16,14 @@ public class MessageService : IMessageService
 
     public async Task AddMessage(MessageDTO message)
     {
-        await _messageRespository.InsertOneAsync(_mapper.Map<Message>(message));
+        try
+        {
+            await _messageRespository.InsertOneAsync(_mapper.Map<Message>(message));
+        }
+        catch
+        {
+            throw new InvalidOperationException("Error on message saving");
+        }
     }
 
     public async void DeleteMessage(Message message)

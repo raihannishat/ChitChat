@@ -27,16 +27,36 @@ public class CacheController : ControllerBase
     [HttpGet("activeUsers")]
     public IActionResult GetAllKeys()
     {
-        var value = _cacheService.GetAllKeys();
+        try
+        {
+            var value = _cacheService.GetAllKeys();
 
-        return Ok(value);
+            return Ok(value);
+        }
+        catch
+        {
+            return NotFound();
+        }
+        
     }
 
     [HttpPost("activeNotifying")]
     public async Task<IActionResult> Post([FromBody] CacheEntryDTO request)
     {
-        await _cacheService.SetCachValueAsync(request.Key, request.Value);
+        if(string.IsNullOrEmpty(request.Key))
+        {
+            return BadRequest("Key can not be null");
+        }
+        try
+        {
+            await _cacheService.SetCachValueAsync(request.Key, request.Value);
 
-        return Ok();
+            return Ok();
+        }
+        catch
+        {
+            return BadRequest();
+        }
+        
     }
 }

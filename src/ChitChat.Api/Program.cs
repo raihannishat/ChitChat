@@ -31,7 +31,6 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
 app.MapHub<MessageHub>("hubs/message");
-
 app.Lifetime.ApplicationStarted.Register(() =>
     ChitChat.Api.ConfigureServices.RegisterSignalRWithRabbitMQ(
     ((IApplicationBuilder)(app)).ApplicationServices));

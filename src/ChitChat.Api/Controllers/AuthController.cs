@@ -16,7 +16,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost, Route("signup")]
-    public async Task<ActionResult<User>> SignUp(UserSignUpDTO user)
+    public async Task<IActionResult> SignUp(UserSignUpDTO user)
     {
         var userNameExist = await _userService.GetUserByNameAsync(user.Name);
 
@@ -34,7 +34,7 @@ public class AuthController : ControllerBase
 
         await _authService.SignUpAsync(user);
 
-        return Ok("Sign Up successfully");
+        return Ok();
     }
 
 

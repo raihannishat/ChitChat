@@ -14,46 +14,54 @@ public class UserController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<List<User>> GetAll() =>
-        await _userService.GetAllUsersAsync();
-
-    [HttpGet("GetById/{id:length(24)}")]
-    public async Task<ActionResult<User>> GetById([FromRoute] string id)
+    public async Task<IActionResult> GetAll()
     {
-        var user = await _userService.GetUserByIdAsync(id);
-
-        if (user is null)
+        var users = await _userService.GetAllUsersAsync();
+        return Ok(users);
+    }
+    [HttpGet("GetById/{id}")]
+    public async Task<IActionResult> GetById([FromRoute] string id)
+    {
+        try
         {
+            var user = await _userService.GetUserByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            return Ok(user);
+        }
+        catch(Exception ex)
+        {
+            _logger.LogError(ex, ex.Message);
             return NotFound();
         }
-
-        return user;
     }
 
+    [AllowAnonymous]
     [HttpGet("GetByName/{name}")]
-    public async Task<bool> GetByName([FromRoute] string name)
+    public async Task<IActionResult> GetByName([FromRoute] string name)
     {
         var user = await _userService.GetUserByNameAsync(name);
-
-        if (user is null)
+        
+        if (user == null)
         {
-            return false;
+            return Ok(false);
         }
-
-        return true;
+        return Ok(true);
     }
 
+    [AllowAnonymous]
     [HttpGet("GetByEmail/{email}")]
-    public async Task<bool> GetByEmail([FromRoute] string email)
+    public async Task<IActionResult> GetByEmail([FromRoute] string email)
     {
         var user = await _userService.GetUserByEmailAsync(email);
 
-        if (user is null)
+        if (user == null)
         {
-            return false;
+            return Ok(false);
         }
-
-        return true;
+        return Ok(true);
     }
 
     [HttpPut("{id:length(24)}")]

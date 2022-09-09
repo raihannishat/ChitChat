@@ -38,7 +38,6 @@ public class UserService : IUserService
     {
         return await _userRepository.FindOneAsync(user => user.Id == id);
     }
-
     public async Task<User> GetUserByNameAsync(string name)
     {
         return await _userRepository.FindOneAsync(user => user.Name == name);
@@ -47,5 +46,12 @@ public class UserService : IUserService
     public async Task UpdateUserAsync(User user)
     {
         await _userRepository.ReplaceOneAsync(user);
+
+        //var user = _userRepository.findUser(user);
+        //if (user == null)
+        //{
+        //    throw
+        //}
+
     }
 }
