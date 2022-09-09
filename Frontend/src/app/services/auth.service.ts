@@ -20,8 +20,8 @@ export class AuthService {
 
   baseUrl = 'https://localhost:7113/api/Auth/';
 
-  signUp(user: User): Observable<User> {
-    return this.http.post<User>(this.baseUrl + 'signup', user);
+  signUp(user: User): Observable<any> {
+    return this.http.post<any>(this.baseUrl + 'signup', user);
   }
 
   signIn(userlogin: UserLogin) {

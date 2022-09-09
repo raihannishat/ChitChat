@@ -38,14 +38,14 @@ export class UsersService {
 
   getUserbyName(value: string): Observable<boolean> {
     const val = this.http.get<boolean>(
-      this.baseUrl + '/' + 'GetByName' + '/' + value
+      this.baseUrl + 'GetByName' + '/' + value
     );
     return val;
   }
 
   getUserbyEmail(value: string): Observable<boolean> {
     const val = this.http.get<boolean>(
-      this.baseUrl + '/' + 'GetByEmail' + '/' + value
+      this.baseUrl + 'GetByEmail' + '/' + value
     );
     return val;
   }

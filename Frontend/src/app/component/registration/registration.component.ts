@@ -12,7 +12,6 @@ import { FormArray } from '@angular/forms';
 import { AbstractControl } from '@angular/forms';
 import * as moment from 'moment';
 import { ToastrService } from 'ngx-toastr';
-import { delay, map, Observable, of } from 'rxjs';
 import { User } from 'src/app/models/user.model';
 import { UsersService } from 'src/app/services/users.service';
 import { UserValidator } from 'src/app/shared/user.validator';
@@ -79,22 +78,18 @@ export class RegistrationComponent implements OnInit {
     this.storeFormData();
     const user = JSON.parse(JSON.stringify(this.user));
     delete user.id;
-    this.authService.signUp(user).subscribe(
-      (response) => {
-        this.profileForm = this.fb.group({
-          userName: [''],
-          email: [''],
-          password: [''],
-          confirmPassword: [''],
-          dateOfBirth: [''],
-        });
+    this.authService.signUp(user).subscribe({
+      next: (respone) => {
+        console.log(respone);
         this.toastr.success('Successful !', 'Registration');
-        // this.refresh();
+        this.router.navigate(['/login']);
       },
-      (err) => {
+      error: (err) => {
+        debugger;
+        console.log(err);
         this.toastr.error('Please check the form again', 'Invalid request');
-      }
-    );
+      },
+    });
   }
   refresh(): void {
     window.location.reload();
@@ -177,3 +172,18 @@ export class RegistrationComponent implements OnInit {
     return this.profileForm.get('dateOfBirth');
   }
 }
+
+// (response) => {
+//   this.profileForm = this.fb.group({
+//     userName: [''],
+//     email: [''],
+//     password: [''],
+//     confirmPassword: [''],
+//     dateOfBirth: [''],
+//   });
+//   this.toastr.success('Successful !', 'Registration');
+//   // this.refresh();
+// },
+// (err) => {
+//   this.toastr.error('Please check the form again', 'Invalid request');
+// }
