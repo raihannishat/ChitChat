@@ -9,6 +9,5 @@ public class UserSingInValidation : AbstractValidator<UserSignInDTO>
 
         RuleFor(user => user.Password).NotEmpty()
             .WithMessage("Password can not be null");
-            
     }
 }

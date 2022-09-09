@@ -1,0 +1,9 @@
+global using AutoMapper;
+global using ChitChat.Infrastructure.Documents;
+global using ChitChat.Infrastructure.DTOs;
+global using ChitChat.Infrastructure.Repositories;
+global using ChitChat.Infrastructure.Services;
+global using FluentAssertions;
+global using Microsoft.Extensions.Logging;
+global using Moq;
+global using Xunit;

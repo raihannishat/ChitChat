@@ -1,7 +1,4 @@
-﻿using ChitChat.Infrastructure.Configuration;
-using Microsoft.Extensions.Configuration;
-
-namespace ChitChat.Infrastructure;
+﻿namespace ChitChat.Infrastructure;
 
 public static class ConfigureServices
 {

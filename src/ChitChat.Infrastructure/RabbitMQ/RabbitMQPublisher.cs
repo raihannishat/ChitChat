@@ -1,6 +1,4 @@
-﻿using ChitChat.Infrastructure.Configuration;
-
-namespace ChitChat.Infrastructure.RabbitMQ;
+﻿namespace ChitChat.Infrastructure.RabbitMQ;
 
 public class RabbitMQPublisher : IRabbitMQPublisher
 {

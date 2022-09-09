@@ -1,5 +1,4 @@
-﻿
-namespace ChitChat.Api.Controllers;
+﻿namespace ChitChat.Api.Controllers;
 
 [ApiController, Route("api/[controller]")]
 public class CacheController : ControllerBase
@@ -37,13 +36,13 @@ public class CacheController : ControllerBase
         {
             return NotFound();
         }
-        
+
     }
 
     [HttpPost("activeNotifying")]
     public async Task<IActionResult> Post([FromBody] CacheEntryDTO request)
     {
-        if(string.IsNullOrEmpty(request.Key))
+        if (string.IsNullOrEmpty(request.Key))
         {
             return BadRequest("Key can not be null");
         }
@@ -57,6 +56,6 @@ public class CacheController : ControllerBase
         {
             return BadRequest();
         }
-        
+
     }
 }

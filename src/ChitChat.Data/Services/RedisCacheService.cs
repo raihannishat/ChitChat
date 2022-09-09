@@ -36,7 +36,10 @@ public class RedisCacheService : ICacheService
     public async Task<string> GetCachValueAsync(string key)
     {
         var db = connectionMultiplexer.GetDatabase();
+
+#pragma warning disable CS8603 // Possible null reference return.
         return await db.StringGetAsync(key);
+#pragma warning restore CS8603 // Possible null reference return.
     }
 
     public async Task SetCachValueAsync(string key, string value)

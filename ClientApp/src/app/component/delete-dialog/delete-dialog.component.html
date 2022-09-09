@@ -1,0 +1,14 @@
+<i class="fa-solid fa-trash-can fa-2x"></i>
+<div style="text-align: center">
+  <p style="font-size: 25px">Are you sure ?</p>
+  <p>Do you really want to delete this user?</p>
+  <button mat-raised-button color="primary" mat-dialog-close>No</button>
+  <button
+    style="margin: 8px"
+    mat-raised-button
+    color="warn"
+    (click)="deleteUser()"
+  >
+    Yes
+  </button>
+</div>

@@ -1,6 +1,4 @@
-﻿using ChitChat.Infrastructure.Configuration;
-
-namespace ChitChat.Infrastructure.RabbitMQ;
+﻿namespace ChitChat.Infrastructure.RabbitMQ;
 
 public class DBConsumer : IDBConsumer
 {
@@ -44,7 +42,7 @@ public class DBConsumer : IDBConsumer
 
                 Console.WriteLine(databaseQueue + "got message --->" + message);
 
-                await _messageService.AddMessage(_mapper.Map<DTOs.MessageDTO>(message));
+                await _messageService.AddMessage(_mapper.Map<MessageDTO>(message));
             }
             catch (Exception ex)
             {

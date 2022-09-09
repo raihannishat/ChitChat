@@ -1,0 +1,26 @@
+<div>
+  <mat-card>
+    <mat-card-title style="text-align: center; padding: 2px"
+      >Login</mat-card-title
+    >
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <!-- user name -->
+      <mat-form-field appearance="outline">
+        <mat-label>name</mat-label>
+        <input matInput formControlName="userName" autocomplete="off" />
+        <mat-error *ngIf="userName?.hasError('required')"> required </mat-error>
+        <mat-icon matSuffix>person_outline</mat-icon>
+      </mat-form-field>
+      <!-- password -->
+      <mat-form-field appearance="outline">
+        <mat-label>password</mat-label>
+        <mat-icon matSuffix>security</mat-icon>
+        <input matInput type="password" formControlName="password" />
+        <mat-error *ngIf="password?.hasError('required')"> required </mat-error>
+      </mat-form-field>
+      <button class="raised-button" style="color: white" mat-raised-button>
+        Login
+      </button>
+    </form>
+  </mat-card>
+</div>

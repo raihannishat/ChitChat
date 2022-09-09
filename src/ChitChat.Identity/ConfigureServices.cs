@@ -1,13 +1,9 @@
-﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System;
-using System.Collections.Generic;
-namespace ChitChat.Identity;
+﻿namespace ChitChat.Identity;
 
 public static class ConfigureServices
 {
     public static IServiceCollection AddIdentityServices(this IServiceCollection services, IConfiguration configuration)
     {
-
         var tokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuerSigningKey = true,

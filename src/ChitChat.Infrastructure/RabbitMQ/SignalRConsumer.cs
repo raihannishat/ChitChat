@@ -1,6 +1,4 @@
-﻿using ChitChat.Infrastructure.Configuration;
-
-namespace ChitChat.Infrastructure.RabbitMQ;
+﻿namespace ChitChat.Infrastructure.RabbitMQ;
 
 public class SignalRConsumer : ISignalRConsumer
 {
@@ -11,7 +9,7 @@ public class SignalRConsumer : ISignalRConsumer
     private readonly IModel _channel;
 
 
-    public SignalRConsumer(IServiceProvider serviceProvider, ExchangerQueueSetting exchangerQueueSetting, IRabbitMQSettings rabbitMQSettings) 
+    public SignalRConsumer(IServiceProvider serviceProvider, ExchangerQueueSetting exchangerQueueSetting, IRabbitMQSettings rabbitMQSettings)
     {
         _serviceProvider = serviceProvider;
         _exchangerQueueSetting = exchangerQueueSetting;
