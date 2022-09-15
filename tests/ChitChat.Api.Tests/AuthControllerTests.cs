@@ -1,4 +1,6 @@
-﻿namespace ChitChat.Api.Tests;
+﻿using ChitChat.Identity.ViewModels;
+
+namespace ChitChat.Api.Tests;
 
 public class AuthControllerTests
 {
@@ -16,7 +18,7 @@ public class AuthControllerTests
     public void SignUp_ShouldReturnBadRequest_WhenUserNameAlreadyExist()
     {
         //Arrange
-        var userSignUpDto = new UserSignUpDTO
+        var userSignUpDto = new UserSignUpRequest
         {
             Name = "asif",
             Email = "asif@gmail.com",
@@ -24,7 +26,7 @@ public class AuthControllerTests
             DateOfBirth = DateTime.Now
         };
 
-        var user = new User
+        var user = new UserViewModel
         {
             Name = userSignUpDto.Name,
             Email = userSignUpDto.Email,
@@ -47,7 +49,7 @@ public class AuthControllerTests
     public void SignUp_ShouldReturnBadRequest_WhenUserEmailAlreadyExist()
     {
         //Arrange
-        var userSignUpDto = new UserSignUpDTO
+        var userSignUpDto = new UserSignUpRequest
         {
             Name = "asif",
             Email = "asif@gmail.com",
@@ -55,7 +57,7 @@ public class AuthControllerTests
             DateOfBirth = DateTime.Now
         };
 
-        var user = new User
+        var user = new UserViewModel
         {
             Name = userSignUpDto.Name,
             Email = userSignUpDto.Email,
@@ -80,7 +82,7 @@ public class AuthControllerTests
     public void SignUp_ShouldReturnOK_WhenUserSignUpSuccesfully()
     {
         //Arrange
-        var userSignUpDto = new UserSignUpDTO
+        var userSignUpDto = new UserSignUpRequest
         {
             Name = "asif",
             Email = "asif@gmail.com",
@@ -116,7 +118,7 @@ public class AuthControllerTests
     public void SignIn_ShouldReturnUnAuthorized_WhenUserCredentialIsInvalid()
     {
         //Arrange
-        var userLogin = new UserSignInDTO
+        var userLogin = new UserSignInRequest
         {
             Name = "asif",
             Password = "addd"
@@ -143,7 +145,7 @@ public class AuthControllerTests
     public void SignIn_ShouldReturnOk_WhenUserCredentialIsvalid()
     {
         //Arrange
-        var userLogin = new UserSignInDTO
+        var userLogin = new UserSignInRequest
         {
             Name = "asif",
             Password = "addd"

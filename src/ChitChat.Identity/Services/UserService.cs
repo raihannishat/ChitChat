@@ -3,10 +3,12 @@
 public class UserService : IUserService
 {
     private readonly IUserRepository _userRepository;
+    private readonly IMapper _mapper;
 
-    public UserService(IUserRepository userRepository)
+    public UserService(IUserRepository userRepository, IMapper mapper)
     {
         _userRepository = userRepository;
+        _mapper = mapper;
     }
 
     public async Task CreateUserAysnc(User user)
@@ -19,39 +21,45 @@ public class UserService : IUserService
         await _userRepository.DeleteByIdAsync(id);
     }
 
-    public async Task<List<User>> GetAllUsersAsync()
+    public async Task<List<UserViewModel>> GetAllUsersAsync()
     {
-        return await _userRepository.GetAll();
+        var userList = await _userRepository.GetAll();
+
+        var userViewModelList = new List<UserViewModel>();
+        foreach (var user in userList)
+        {
+            userViewModelList.Add(_mapper.Map<UserViewModel>(user));
+        }
+
+        return userViewModelList;
     }
 
-    public async Task<User> GetUserAsync(UserSignInDTO user)
+    public async Task<UserViewModel> GetUserAsync(UserSignInRequest user)
     {
-        return await _userRepository.FindOneAsync(x => x.Name == user.Name && x.Password == user.Password);
+        var userEntity = await _userRepository.FindOneAsync(x => x.Name == user.Name && x.Password == user.Password);
+        return _mapper.Map<UserViewModel>(userEntity);
     }
 
-    public async Task<User> GetUserByEmailAsync(string email)
+    public async Task<UserViewModel> GetUserByIdAsync(string id)
     {
-        return await _userRepository.FindOneAsync(user => user.Email == email);
+        var userEntity = await _userRepository.FindOneAsync(user => user.Id == id);
+        return _mapper.Map<UserViewModel>(userEntity);
     }
 
-    public async Task<User> GetUserByIdAsync(string id)
+    public async Task<UserViewModel> GetUserByEmailAsync(string email)
     {
-        return await _userRepository.FindOneAsync(user => user.Id == id);
-    }
-    public async Task<User> GetUserByNameAsync(string name)
-    {
-        return await _userRepository.FindOneAsync(user => user.Name == name);
+        var userEntity = await _userRepository.FindOneAsync(user => user.Email == email);
+        return _mapper.Map<UserViewModel>(userEntity);
     }
 
-    public async Task UpdateUserAsync(User user)
+    public async Task<UserViewModel> GetUserByNameAsync(string name)
     {
-        await _userRepository.ReplaceOneAsync(user);
+        var userEntity = await _userRepository.FindOneAsync(user => user.Name == name);
+        return _mapper.Map<UserViewModel>(userEntity);
+    }
 
-        //var user = _userRepository.findUser(user);
-        //if (user == null)
-        //{
-        //    throw
-        //}
-
+    public async Task UpdateUserAsync(UserUpdateRequest user)
+    {
+        await _userRepository.ReplaceOneAsync(_mapper.Map<User>(user));
     }
 }

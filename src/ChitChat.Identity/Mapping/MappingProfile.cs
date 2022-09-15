@@ -4,6 +4,8 @@ public class MappingProfile : Profile
 {
     public MappingProfile()
     {
-        CreateMap<User, UserSignUpDTO>().ReverseMap();
+        CreateMap<User, UserSignUpRequest>().ReverseMap();
+        CreateMap<User, UserUpdateRequest>().ReverseMap();
+        CreateMap<User, UserViewModel>().ReverseMap();
     }
 }

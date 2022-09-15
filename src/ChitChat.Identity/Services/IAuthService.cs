@@ -2,9 +2,9 @@
 
 public interface IAuthService
 {
-    Task SignUpAsync(UserSignUpDTO user);
-    Task<AuthenticationResult> SignInAsync(UserSignInDTO user);
+    Task SignUpAsync(UserSignUpRequest user);
+    Task<AuthenticationResult> SignInAsync(UserSignInRequest user);
     Task InsertRefreshTokenAsync(RefreshToken token);
-    Task<AuthenticationResult> GenerateTokenAsync(User user);
+    Task<AuthenticationResult> GenerateTokenAsync(UserViewModel user);
     Task<AuthenticationResult> GetRefreshTokenAsync(string token, string refreshToken);
 }

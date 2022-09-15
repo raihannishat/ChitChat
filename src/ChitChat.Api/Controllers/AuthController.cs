@@ -16,7 +16,7 @@ public class AuthController : ControllerBase
     }
 
     [HttpPost, Route("signup")]
-    public async Task<IActionResult> SignUp(UserSignUpDTO user)
+    public async Task<IActionResult> SignUp(UserSignUpRequest user)
     {
         var userNameExist = await _userService.GetUserByNameAsync(user.Name);
 
@@ -39,7 +39,7 @@ public class AuthController : ControllerBase
 
 
     [HttpPost, Route("signin")]
-    public async Task<IActionResult> SignIn([FromBody] UserSignInDTO login)
+    public async Task<IActionResult> SignIn([FromBody] UserSignInRequest login)
     {
         var authResponse = await _authService.SignInAsync(login);
 

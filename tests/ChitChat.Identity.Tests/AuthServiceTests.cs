@@ -1,4 +1,6 @@
-﻿namespace ChitChat.Identity.Tests;
+﻿using ChitChat.Identity.Request;
+
+namespace ChitChat.Identity.Tests;
 
 public class AuthServiceTests
 {
@@ -20,7 +22,7 @@ public class AuthServiceTests
     public void SignInAsync_AuthenticationResultSuccessShouldBeFalse_WhenUserCredentialIsInvalid()
     {
         //Arrange
-        var userDto = new UserSignInDTO
+        var userDto = new UserSignInRequest
         {
             Name = "nishat",
             Password = "something"

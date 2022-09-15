@@ -1,4 +1,6 @@
-﻿namespace ChitChat.Api.Tests;
+﻿using ChitChat.Identity.ViewModels;
+
+namespace ChitChat.Api.Tests;
 
 public class UserControllerTests
 {
@@ -15,11 +17,11 @@ public class UserControllerTests
     public void GetAll_ShouldReturnOk_WhenUsersListFound()
     {
         //Arrange
-        var usersList = new List<User>()
+        var usersList = new List<UserViewModel>()
         {
-            new User{ Id = "1", Name = "asif", Email = "abc@gmail.com", Password = "as", DateOfBirth = DateTime.Now},
-            new User{ Id = "2", Name = "nishat", Email = "abc@gmail.com", Password = "as", DateOfBirth = DateTime.Now},
-            new User{ Id = "3", Name = "pawpaw", Email = "abc@gmail.com", Password = "as", DateOfBirth = DateTime.Now}
+            new UserViewModel { Id = "1", Name = "asif", Email = "abc@gmail.com", Password = "as", DateOfBirth = DateTime.Now},
+            new UserViewModel { Id = "2", Name = "nishat", Email = "abc@gmail.com", Password = "as", DateOfBirth = DateTime.Now},
+            new UserViewModel { Id = "3", Name = "pawpaw", Email = "abc@gmail.com", Password = "as", DateOfBirth = DateTime.Now}
         };
 
         _userServiceMock.Setup(x => x.GetAllUsersAsync()).ReturnsAsync(usersList);
@@ -38,7 +40,7 @@ public class UserControllerTests
         //Arrange 
         string userId = "12adsd_dfd4_sf3";
 
-        var user = new User
+        var user = new UserViewModel
         {
             Name = "asif",
             Email = "asif@gmail.com",
@@ -72,31 +74,14 @@ public class UserControllerTests
         (result as NotFoundResult)!.StatusCode.Should().Be(404);
     }
 
-    [Fact]
-    public void GetById_ShouldReturnNotFound_WhenExceptionThrown()
-    {
-        //Arrange 
-        string userId = "12adsd";
-
-        _userServiceMock.Setup(x => x.GetUserByIdAsync(userId))
-            .Throws(new Exception());
-
-        //Act
-        var result = _sut.GetById(userId).Result;
-
-        //Assert
-
-        result.GetType().Should().Be(typeof(NotFoundResult));
-        (result as NotFoundResult)!.StatusCode.Should().Be(404);
-    }
-
+   
     [Fact]
     public void GetByName_ShouldReturnOk_WhenUserNameExist()
     {
         //Arrange
         string userName = "nishat";
 
-        var user = new User
+        var user = new UserViewModel
         {
             Name = "nishat",
             Email = "nishat@gmail.com",
@@ -137,7 +122,7 @@ public class UserControllerTests
         //Arrange
         string email = "asif@gmail.com";
 
-        var user = new User
+        var user = new UserViewModel
         {
             Name = "nishat",
             Email = email,
@@ -195,17 +180,23 @@ public class UserControllerTests
         //Arrange
         string userId = "fd3431";
 
-        var user = new User
+        var updateuser = new UserUpdateRequest
+        {
+            Name = "asif",
+            Email = "changed@gmail.com"
+        };
+
+        var user = new UserViewModel
         {
             Name = "asif",
             Email = "changed@gmail.com"
         };
 
         _userServiceMock.Setup(x => x.GetUserByIdAsync(userId)).ReturnsAsync(user);
-        _userServiceMock.Setup(x => x.UpdateUserAsync(user));
+        _userServiceMock.Setup(x => x.UpdateUserAsync(updateuser));
 
         //Act
-        var result = _sut.Update(userId, user).Result;
+        var result = _sut.Update(userId, updateuser).Result;
         var obj = result.Result as NoContentResult;
 
         //Assert
@@ -235,7 +226,7 @@ public class UserControllerTests
         //Arrange
         string userId = "fd3431";
 
-        var user = new User
+        var user = new UserViewModel
         {
             Name = "asif",
             Email = "changed@gmail.com"

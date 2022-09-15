@@ -1,4 +1,5 @@
-﻿namespace ChitChat.Api.Controllers;
+﻿
+namespace ChitChat.Api.Controllers;
 
 [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme),
     ApiController, Route("api/[controller]")]
@@ -22,20 +23,12 @@ public class UserController : ControllerBase
     [HttpGet("GetById/{id}")]
     public async Task<IActionResult> GetById([FromRoute] string id)
     {
-        try
-        {
             var user = await _userService.GetUserByIdAsync(id);
             if (user == null)
             {
                 return NotFound();
             }
             return Ok(user);
-        }
-        catch(Exception ex)
-        {
-            _logger.LogError(ex, ex.Message);
-            return NotFound();
-        }
     }
 
     [AllowAnonymous]
@@ -65,7 +58,7 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("{id:length(24)}")]
-    public async Task<ActionResult<User>> Update(string id, User updateUser)
+    public async Task<ActionResult<UserViewModel>> Update(string id, UserUpdateRequest updateUser)
     {
         var user = await _userService.GetUserByIdAsync(id);
 
@@ -81,7 +74,7 @@ public class UserController : ControllerBase
     }
 
     [HttpDelete("{id:length(24)}")]
-    public async Task<ActionResult<User>> Delete(string id)
+    public async Task<ActionResult<UserViewModel>> Delete(string id)
     {
         var user = await _userService.GetUserByIdAsync(id);
 

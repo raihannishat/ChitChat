@@ -18,7 +18,7 @@ public class AuthService : IAuthService
         _tokenHelper = tokenHelper;
     }
 
-    public async Task SignUpAsync(UserSignUpDTO user)
+    public async Task SignUpAsync(UserSignUpRequest user)
     {
         var hashedPassword = SHA_256.ComputeHash(user.Password);
 
@@ -27,7 +27,7 @@ public class AuthService : IAuthService
         await _userService.CreateUserAysnc(_mapper.Map<User>(user));
     }
 
-    public async Task<AuthenticationResult> SignInAsync(UserSignInDTO user)
+    public async Task<AuthenticationResult> SignInAsync(UserSignInRequest user)
     {
         var hashedPassword = SHA_256.ComputeHash(user.Password);
 
@@ -47,7 +47,7 @@ public class AuthService : IAuthService
         return await GenerateTokenAsync(existingUser);
     }
 
-    public async Task<AuthenticationResult> GenerateTokenAsync(User user)
+    public async Task<AuthenticationResult> GenerateTokenAsync(UserViewModel user)
     {
         var tokenHandlder = new JwtSecurityTokenHandler();
 

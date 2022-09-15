@@ -1,13 +1,17 @@
-﻿namespace ChitChat.Identity.Tests;
+﻿using ChitChat.Identity.Request;
+using ChitChat.Identity.ViewModels;
+
+namespace ChitChat.Identity.Tests;
 
 public class UserServiceTests
 {
     private readonly UserService _sut;
     public readonly Mock<IUserRepository> _userRepoMock = new();
+    private readonly Mock<IMapper> _mapperMock = new();
 
     public UserServiceTests()
     {
-        _sut = new UserService(_userRepoMock.Object);
+        _sut = new UserService(_userRepoMock.Object, _mapperMock.Object);
     }
 
     [Fact]
@@ -18,20 +22,30 @@ public class UserServiceTests
 
         var userDto = new User
         {
+            Id = userId,
             Name = "Topu vai",
             DateOfBirth = DateTime.UtcNow,
             Email = "abc@gmail.com",
             Password = "Abc123#"
         };
 
+        var userviewModel = new UserViewModel
+        {
+            Id = userDto.Id,
+            Name = userDto.Name,
+            DateOfBirth = userDto.DateOfBirth,
+            Email = userDto.Email,
+            Password = userDto.Password
+        };
+
         _userRepoMock.Setup(x =>
             x.FindOneAsync(user => user.Id == userId)).ReturnsAsync(userDto);
-
+        _mapperMock.Setup(x => x.Map<UserViewModel>(userDto)).Returns(userviewModel);
         //Act
         var user = _sut.GetUserByIdAsync(userId).Result;
 
         //Assert
-        user.Should().Be(userDto);
+        user.Should().Be(userviewModel);
     }
 
     [Fact]
@@ -64,14 +78,24 @@ public class UserServiceTests
             Password = "Abc123#"
         };
 
+        var userviewModel = new UserViewModel
+        {
+            Id = userDto.Id,
+            Name = userDto.Name,
+            DateOfBirth = userDto.DateOfBirth,
+            Email = userDto.Email,
+            Password = userDto.Password
+        };
+
         _userRepoMock.Setup(x =>
             x.FindOneAsync(user => user.Name == userName)).ReturnsAsync(userDto);
 
+        _mapperMock.Setup(x => x.Map<UserViewModel>(userDto)).Returns(userviewModel);
         //Act
         var user = _sut.GetUserByNameAsync(userName).Result;
 
         //Assert
-        user.Name.Should().Be(userName);
+        user.Should().Be(userviewModel);
     }
 
     [Fact]
@@ -104,14 +128,25 @@ public class UserServiceTests
             Password = "Abc123#"
         };
 
+        var userviewModel = new UserViewModel
+        {
+            Id = userDto.Id,
+            Name = userDto.Name,
+            DateOfBirth = userDto.DateOfBirth,
+            Email = userDto.Email,
+            Password = userDto.Password
+        };
+
         _userRepoMock.Setup(x =>
             x.FindOneAsync(user => user.Email == email)).ReturnsAsync(userDto);
+
+        _mapperMock.Setup(x => x.Map<UserViewModel>(userDto)).Returns(userviewModel);
 
         //Act
         var user = _sut.GetUserByEmailAsync(email).Result;
 
         //Assert
-        user.Should().Be(userDto);
+        user.Should().Be(userviewModel);
     }
 
     [Fact]
@@ -135,7 +170,7 @@ public class UserServiceTests
     public void GetUserAsync_ShouldReturnUser_WhenUserExist()
     {
         //Arrange 
-        var userSignIn = new UserSignInDTO
+        var userSignIn = new UserSignInRequest
         {
             Name = "nishat",
             Password = "abc123#"
@@ -147,22 +182,28 @@ public class UserServiceTests
             Password = userSignIn.Password
         };
 
+        var userviewModel = new UserViewModel
+        {
+            Name = user.Name,
+            Password = user.Password
+        };
         _userRepoMock.Setup(x => x.FindOneAsync(
             user => user.Name == userSignIn.Name && user.Password == userSignIn.Password))
             .ReturnsAsync(user);
 
+        _mapperMock.Setup(x => x.Map<UserViewModel>(user)).Returns(userviewModel);
         //Act
         var userResult = _sut.GetUserAsync(userSignIn).Result;
 
         //Assert
-        userResult.Should().Be(user);
+        userResult.Should().Be(userviewModel);
     }
 
     [Fact]
     public void GetUserAsync_ShouldReturnNULL_WhenUserDoesNotExist()
     {
         //Arrange
-        var userSignInDto = new UserSignInDTO
+        var userSignInDto = new UserSignInRequest
         {
             Name = "someone",
             Password = "something"

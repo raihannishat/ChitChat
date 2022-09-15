@@ -1,7 +1,6 @@
 global using AutoMapper;
 global using ChitChat.Identity.Configuration;
 global using ChitChat.Identity.Documents;
-global using ChitChat.Identity.DTOs;
 global using ChitChat.Identity.Repositories;
 global using ChitChat.Identity.Services;
 global using ChitChat.Identity.Utilities;

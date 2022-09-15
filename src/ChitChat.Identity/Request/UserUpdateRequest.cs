@@ -1,7 +1,8 @@
-﻿namespace ChitChat.Identity.DTOs;
+﻿namespace ChitChat.Identity.Request;
 
-public class UserSignUpDTO
+public class UserUpdateRequest
 {
+    public string Id { get; set; } = string.Empty;
     public string Name { get; set; } = string.Empty;
     public DateTime DateOfBirth { get; set; }
     public string Password { get; set; } = string.Empty;

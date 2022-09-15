@@ -2,7 +2,6 @@
 global using ChitChat.Data.Services;
 global using ChitChat.Identity.Configuration;
 global using ChitChat.Identity.Documents;
-global using ChitChat.Identity.DTOs;
 global using ChitChat.Identity.Request;
 global using ChitChat.Identity.Response;
 global using ChitChat.Identity.Services;
@@ -22,3 +21,4 @@ global using Serilog.Events;
 global using StackExchange.Redis;
 global using System.Text;
 global using ChitChat.Api;
+global using ChitChat.Identity.ViewModels;
