@@ -40,7 +40,7 @@ public class DBConsumer : IDBConsumer
             {
                 var message = JsonSerializer.Deserialize<Message>(data);
 
-                Console.WriteLine(databaseQueue + "got message --->" + message);
+                _logger.LogInformation(databaseQueue + "got message --->" + message);
 
                 await _messageService.AddMessage(_mapper.Map<MessageDTO>(message));
             }

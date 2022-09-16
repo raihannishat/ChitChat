@@ -7,15 +7,17 @@ public class SignalRConsumer : ISignalRConsumer
     private readonly ConnectionFactory _factory;
     private readonly IConnection _connection;
     private readonly IModel _channel;
+    private readonly ILogger<SignalRConsumer> _logger;
 
-
-    public SignalRConsumer(IServiceProvider serviceProvider, ExchangerQueueSetting exchangerQueueSetting, IRabbitMQSettings rabbitMQSettings)
+    public SignalRConsumer(IServiceProvider serviceProvider, ExchangerQueueSetting exchangerQueueSetting,
+        IRabbitMQSettings rabbitMQSettings, ILogger<SignalRConsumer> logger)
     {
         _serviceProvider = serviceProvider;
         _exchangerQueueSetting = exchangerQueueSetting;
         _factory = new ConnectionFactory() { Uri = new Uri(rabbitMQSettings.URI) };
         _connection = _factory.CreateConnection();
         _channel = _connection.CreateModel();
+        _logger = logger;
     }
 
     public virtual void Connect()
@@ -33,7 +35,7 @@ public class SignalRConsumer : ISignalRConsumer
             var data = Encoding.UTF8.GetString(body);
             var message = JsonSerializer.Deserialize<Message>(data)!;
 
-            Console.WriteLine(signalRQueue + "got message --->" + message);
+            _logger.LogInformation(signalRQueue + "got message --->" + message);
 
             var groupName = GetGroupName(message.SenderUsername, message.RecipientUsername);
 

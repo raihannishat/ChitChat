@@ -34,7 +34,6 @@ public class RabbitMQPublisher : IRabbitMQPublisher
 
             channel.BasicPublish(exchange: exchange, routingKey: "", basicProperties: null, body: body);
 
-            Console.WriteLine(" [x] Sent {0}", message);
         }
 
         return Task.CompletedTask;

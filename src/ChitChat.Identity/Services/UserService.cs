@@ -74,6 +74,7 @@ public class UserService : IUserService
         {
             return false;
         }
+        user.Id = userEnitity.Id;
         await _userRepository.ReplaceOneAsync(_mapper.Map<User>(user));
         return true;
     }
