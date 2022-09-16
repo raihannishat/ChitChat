@@ -60,15 +60,13 @@ public class UserController : ControllerBase
     [HttpPut("{id:length(24)}")]
     public async Task<ActionResult<UserViewModel>> Update(string id, UserUpdateRequest updateUser)
     {
-        var user = await _userService.GetUserByIdAsync(id);
-
-        if (user is null)
+        var successResponse = await _userService.UpdateUserAsync(id, updateUser);
+        
+        if (successResponse == false)
         {
+            _logger.LogInformation("User id : {0} not found", id);
             return NotFound();
         }
-
-        updateUser.Id = id;
-        await _userService.UpdateUserAsync(updateUser);
 
         return NoContent();
     }
@@ -76,14 +74,11 @@ public class UserController : ControllerBase
     [HttpDelete("{id:length(24)}")]
     public async Task<ActionResult<UserViewModel>> Delete(string id)
     {
-        var user = await _userService.GetUserByIdAsync(id);
-
-        if (user is null)
+        var successResponse = await _userService.DeleteUserByIdAsync(id);
+        if (successResponse == false)
         {
             return NotFound();
         }
-
-        await _userService.DeleteUserByIdAsync(id);
 
         return NoContent();
     }

@@ -8,6 +8,6 @@ public interface IUserService
     Task<UserViewModel> GetUserByIdAsync(string id);
     Task<UserViewModel> GetUserByNameAsync(string name);
     Task<UserViewModel> GetUserByEmailAsync(string email);
-    Task UpdateUserAsync(UserUpdateRequest user);
-    Task DeleteUserByIdAsync(string id);
+    Task<bool> UpdateUserAsync(string id, UserUpdateRequest user);
+    Task<bool> DeleteUserByIdAsync(string id);
 }

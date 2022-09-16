@@ -16,9 +16,17 @@ public class UserService : IUserService
         await _userRepository.InsertOneAsync(user);
     }
 
-    public async Task DeleteUserByIdAsync(string id)
+    public async Task<bool> DeleteUserByIdAsync(string id)
     {
+        var user = await GetUserByIdAsync(id);
+
+        if (user is null)
+        {
+            return false;
+        }
         await _userRepository.DeleteByIdAsync(id);
+        
+        return true;
     }
 
     public async Task<List<UserViewModel>> GetAllUsersAsync()
@@ -58,8 +66,15 @@ public class UserService : IUserService
         return _mapper.Map<UserViewModel>(userEntity);
     }
 
-    public async Task UpdateUserAsync(UserUpdateRequest user)
+    public async Task<bool> UpdateUserAsync(string id, UserUpdateRequest user)
     {
+        var userEnitity = await GetUserByIdAsync(id);
+
+        if (userEnitity is null)
+        {
+            return false;
+        }
         await _userRepository.ReplaceOneAsync(_mapper.Map<User>(user));
+        return true;
     }
 }

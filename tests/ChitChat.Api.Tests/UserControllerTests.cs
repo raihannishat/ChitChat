@@ -162,8 +162,9 @@ public class UserControllerTests
     {
         //Arrange
         string userId = "4dsd_3adfd_dd31";
-        _userServiceMock.Setup(x => x.GetUserByIdAsync(userId))
-            .ReturnsAsync(() => null!);
+
+        _userServiceMock.Setup(x => 
+            x.UpdateUserAsync(userId, new UserUpdateRequest())).ReturnsAsync(false);
 
         //Act
         var result = _sut.Update(userId, new()).Result;
@@ -186,14 +187,8 @@ public class UserControllerTests
             Email = "changed@gmail.com"
         };
 
-        var user = new UserViewModel
-        {
-            Name = "asif",
-            Email = "changed@gmail.com"
-        };
-
-        _userServiceMock.Setup(x => x.GetUserByIdAsync(userId)).ReturnsAsync(user);
-        _userServiceMock.Setup(x => x.UpdateUserAsync(updateuser));
+        _userServiceMock.Setup(x => 
+            x.UpdateUserAsync(userId, updateuser)).ReturnsAsync(true);
 
         //Act
         var result = _sut.Update(userId, updateuser).Result;
@@ -208,9 +203,9 @@ public class UserControllerTests
     {
         //Arrange
         string userId = "66rafdf23";
-        _userServiceMock.Setup(x => x.GetUserByIdAsync(userId))
-            .ReturnsAsync(() => null!);
-
+        _userServiceMock.Setup(x =>
+            x.DeleteUserByIdAsync(userId)).ReturnsAsync(false);
+        
         //Act
         var result = _sut.Delete(userId).Result;
         var obj = result.Result as NotFoundResult;
@@ -226,14 +221,8 @@ public class UserControllerTests
         //Arrange
         string userId = "fd3431";
 
-        var user = new UserViewModel
-        {
-            Name = "asif",
-            Email = "changed@gmail.com"
-        };
-
-        _userServiceMock.Setup(x => x.GetUserByIdAsync(userId)).ReturnsAsync(user);
-        _userServiceMock.Setup(x => x.DeleteUserByIdAsync(userId));
+        _userServiceMock.Setup(x => 
+            x.DeleteUserByIdAsync(userId)).ReturnsAsync(true);
 
         //Act
         var result = _sut.Delete(userId).Result;
